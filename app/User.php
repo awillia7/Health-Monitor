@@ -1,0 +1,40 @@
+<?php
+
+namespace App;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use LdapRecord\Laravel\Auth\LdapAuthenticatable;
+use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use Carbon\Carbon;
+use App\Ldap\Scopes\HasIdCard;
+
+class User extends Authenticatable implements LdapAuthenticatable
+{
+    use Notifiable, AuthenticatesWithLdap;
+
+    protected $casts = [
+        'roles' => 'array'
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    public function screenings()
+    {
+        return $this->hasMany(Screening::class);
+    }
+
+    public function getTodayScreening()
+    {
+        return $this->screenings()->with(['answers' => function($answer) {
+            $answer->with(['question']);
+        }])->whereDate('created_at', Carbon::today())->first();
+    }
+}
