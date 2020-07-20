@@ -29,7 +29,7 @@ class ScreeningByErpController extends Controller
         if (!$screening) {
             $status = null;
         } else {
-            $status = $screening->fail_score > $screening->score ? 'OPEN' : 'CLOSED';
+            $status = $screening->fail_score > $screening->score ? 'OPEN' : 'LOCKED';
         }
 
         return response()->json([
