@@ -8,10 +8,11 @@ use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use Carbon\Carbon;
 use App\Ldap\Scopes\HasIdCard;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
-    use Notifiable, AuthenticatesWithLdap;
+    use HasApiTokens, Notifiable, AuthenticatesWithLdap;
 
     protected $casts = [
         'roles' => 'array'

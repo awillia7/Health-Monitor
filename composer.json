@@ -12,6 +12,7 @@
         "directorytree/ldaprecord-laravel": "^1.6",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
+        "laravel/passport": "^9.3",
         "laravel/tinker": "^2.0"
     },
     "require-dev": {

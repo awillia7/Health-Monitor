@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\User;
 
 class ScreeningByErpController extends Controller
@@ -15,13 +16,9 @@ class ScreeningByErpController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // $res = Screening::where('id', $screening->id)->with(['answers' => function($answer) {
-        //     $answer->with(['question']);
-        // }])->first();
-
         $user = User::where('erp_id', str_pad($request->user, 7, '0', STR_PAD_LEFT))->first();
         if (!$user) {
-            return response()->json([], 404);
+            return response()->json(null, 404);
         }
 
         $screening = User::where('erp_id', str_pad($request
