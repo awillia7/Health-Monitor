@@ -4,15 +4,21 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <div class="row justify-content-center">
-              <h3>
-                <span v-if="locked" class="text-danger">Locked</span>
-                <span v-else class="text-succuess">Open</span>
-              </h3>
+            <div class="row justify-content-center text-center">
+              <h4>{{ screening.user.name }} - {{ created_date }}</h4>
             </div>
           </div>
 
           <div class="card-body">
+            <div class="row justify-content-center">
+              <h3>
+                <span v-if="locked" class="text-danger">Locked</span>
+                <span v-else class="text-success">Open</span>
+              </h3>
+            </div>
+
+            <hr />
+
             <div
               class="row align-items-center justify-content-center align-middle mb-2"
               v-for="answer in screening.answers"
@@ -30,16 +36,18 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   props: ["screening"],
-
-  created() {
-    console.log(this.screening);
-  },
 
   computed: {
     locked() {
       return this.screening.score >= this.screening.fail_score;
+    },
+
+    created_date() {
+      return moment(this.screening.created_at).format("MMMM D, YYYY");
     }
   }
 };

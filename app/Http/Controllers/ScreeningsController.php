@@ -20,7 +20,7 @@ class ScreeningsController extends Controller
         //dd($screening->id);
         $res = Screening::where('id', $screening->id)->with(['answers' => function($answer) {
             $answer->with(['question']);
-        }])->first();
+        }, 'user'])->first();
 
         return view('screenings.show', ['screening' => $res]);
     }
