@@ -12,8 +12,8 @@
           <div class="card-body">
             <div class="row justify-content-center">
               <h3>
-                <span v-if="locked" class="text-danger">Locked</span>
-                <span v-else class="text-success">Open</span>
+                <span v-if="locked" class="text-danger">NOT CLEARED</span>
+                <span v-else class="text-success">CLEARED</span>
               </h3>
             </div>
 

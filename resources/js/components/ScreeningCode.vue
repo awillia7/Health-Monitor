@@ -3,15 +3,21 @@
     <div class="row justify-content-center text-center">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header"><h3>Today's Screening</h3></div>
+          <div class="card-header">
+            <h3>Today's Screening</h3>
+          </div>
           <div class="card-body">
             <div class="row justify-content-center">
               <h3 class="row">
                 Status:&nbsp;
-                <span v-if="locked" class="text-danger">Locked</span>
-                <span v-else class="text-success">Open</span>
+                <span v-if="locked" class="text-danger">NOT CLEARED</span>
+                <span v-else class="text-success">CLEARED</span>
               </h3>
             </div>
+            <div
+              class="row text-danger"
+              v-if="locked"
+            >You exhibit health symptoms that indicate potential community risk. Please do not go to class and/or work, and report to the Student Health Services office for testing.</div>
 
             <hr />
 

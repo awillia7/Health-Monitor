@@ -2163,6 +2163,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["screening"],
@@ -61745,10 +61751,10 @@ var render = function() {
                 _c("h3", [
                   _vm.locked
                     ? _c("span", { staticClass: "text-danger" }, [
-                        _vm._v("Locked")
+                        _vm._v("NOT CLEARED")
                       ])
                     : _c("span", { staticClass: "text-success" }, [
-                        _vm._v("Open")
+                        _vm._v("CLEARED")
                       ])
                 ])
               ]),
@@ -61827,13 +61833,21 @@ var render = function() {
                   _vm._v("\n              Status: \n              "),
                   _vm.locked
                     ? _c("span", { staticClass: "text-danger" }, [
-                        _vm._v("Locked")
+                        _vm._v("NOT CLEARED")
                       ])
                     : _c("span", { staticClass: "text-success" }, [
-                        _vm._v("Open")
+                        _vm._v("CLEARED")
                       ])
                 ])
               ]),
+              _vm._v(" "),
+              _vm.locked
+                ? _c("div", { staticClass: "row text-danger" }, [
+                    _vm._v(
+                      "You exhibit health symptoms that indicate potential community risk. Please do not go to class and/or work, and report to the Student Health Services office for testing."
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
