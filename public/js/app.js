@@ -1939,7 +1939,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["question", "group", "groupAnswer", "hidden"],
+  props: ["value", "question", "group", "groupAnswer", "hidden"],
   computed: {
     classes: function classes() {
       var classes = this.group ? "ml-5 " : " ";
@@ -2020,7 +2020,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["questionGroup"],
+  props: ["value", "questionGroup"],
   components: {
     QuestionField: _QuestionField_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -2216,17 +2216,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["questions", "errors"],
+  props: ["questions"],
   data: function data() {
     return {
-      questionGroups: null
+      questionGroups: null,
+      value: {
+        "1": "answer"
+      }
     };
   },
   created: function created() {
+    var _this = this;
+
     this.questionGroups = _.groupBy(this.questions, function (question) {
       return question.group_order;
+    });
+    this.value = JSON.parse(JSON.stringify(this.questionGroups));
+    Object.keys(this.value).forEach(function (group) {
+      Object.keys(_this.value[group]).forEach(function (question) {
+        _this.value[group][question] = null;
+      });
     });
   },
   components: {
@@ -61905,7 +61917,14 @@ var render = function() {
               { key: "questionGroup-" + index, staticClass: "card mb-2" },
               [
                 _c("question-group-field", {
-                  attrs: { "question-group": questionGroup }
+                  attrs: { "question-group": questionGroup },
+                  model: {
+                    value: _vm.value[index],
+                    callback: function($$v) {
+                      _vm.$set(_vm.value, index, $$v)
+                    },
+                    expression: "value[index]"
+                  }
                 })
               ],
               1

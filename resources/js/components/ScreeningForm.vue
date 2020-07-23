@@ -9,7 +9,8 @@
           v-for="(questionGroup, index) in questionGroups"
           :key="`questionGroup-${index}`"
         >
-          <question-group-field :question-group="questionGroup" />
+          <!-- <question-group-field :question-group="questionGroup" /> -->
+          <question-group-field v-model="value[index]" :question-group="questionGroup" />
         </div>
 
         <br />
@@ -26,17 +27,25 @@
 import QuestionGroupField from "./QuestionGroupField.vue";
 
 export default {
-  props: ["questions", "errors"],
+  props: ["questions"],
 
   data() {
     return {
-      questionGroups: null
+      questionGroups: null,
+      value: { "1": "answer" }
     };
   },
 
   created() {
     this.questionGroups = _.groupBy(this.questions, question => {
       return question.group_order;
+    });
+
+    this.value = JSON.parse(JSON.stringify(this.questionGroups));
+    Object.keys(this.value).forEach(group => {
+      Object.keys(this.value[group]).forEach(question => {
+        this.value[group][question] = null;
+      });
     });
   },
 

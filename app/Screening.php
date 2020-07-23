@@ -31,11 +31,4 @@ class Screening extends Model
     {
         return $this->hasMany(Answer::class);
     }
-
-    public function getTextAttribute()
-    {
-        $text = "Test";
-
-        return $text;
-    }
 }

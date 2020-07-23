@@ -48,7 +48,7 @@
 import QuestionField from "./QuestionField.vue";
 
 export default {
-  props: ["questionGroup"],
+  props: ["value", "questionGroup"],
 
   components: { QuestionField },
 

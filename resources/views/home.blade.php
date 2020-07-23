@@ -5,7 +5,7 @@
 @if ($screening)
     <screening-code :screening="{{ $screening }}" />
 @else
-    <screening-form :questions="{{ $questions }}" :errors="{{ $errors }}">
+    <screening-form :questions="{{ $questions }}">
         @csrf
     </screening-form>
 @endif

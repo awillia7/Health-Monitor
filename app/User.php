@@ -38,4 +38,9 @@ class User extends Authenticatable implements LdapAuthenticatable
             $answer->with(['question']);
         }])->whereDate('created_at', Carbon::today())->first();
     }
+
+    public function hasRole($role)
+    {
+        return in_array($role, $this->roles ? $this->roles : []);
+    }
 }

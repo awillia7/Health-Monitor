@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  props: ["question", "group", "groupAnswer", "hidden"],
+  props: ["value", "question", "group", "groupAnswer", "hidden"],
 
   computed: {
     classes() {

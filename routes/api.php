@@ -15,4 +15,4 @@ use Illuminate\Http\Request;
 
 Route::post('/login', 'Api\AuthController@login');
 
-Route::get('/users/{user}/screening', 'Api\ScreeningByErpController')->middleware('auth:api');
+Route::get('/users/{user}/screening', 'Api\ScreeningByErpController')->middleware('auth:api')->middleware('role:ADMIN');

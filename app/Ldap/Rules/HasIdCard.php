@@ -13,7 +13,7 @@ class HasIdCard extends Rule
      */
     public function isValid()
     {
-        return $this->user->getFirstAttribute('samAccountName') === 'ellucian'  
+        return $this->user->getFirstAttribute('samAccountName') === getenv("ADMIN_ACCOUNT")  
         || !empty($this->user->getFirstAttribute('extensionAttribute13'));
     }
 }
