@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         $screening = auth()->user()->getTodayScreening();
         
-        $questions = Question::all()->sortBy('group_order')->sortBy('question_order');
+        $questions = Question::all()->sortBy('group_order')->sortBy('question_order')->keyBy('id');
         
         return view('home', compact('screening', 'questions'));
     }

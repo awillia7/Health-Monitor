@@ -10,6 +10,7 @@
           :name="questionName"
           :id="fieldId(questionName, 'Yes')"
           :value="question.value"
+          @input="updateValue(question.value)"
         />
         <label :for="fieldId(questionName, 'Yes')" class="form-check-label">Yes</label>
       </div>
@@ -21,6 +22,7 @@
           :id="fieldId(questionName, 'No')"
           value="0"
           :checked="checked"
+          @input="updateValue(0)"
         />
         <label :for="fieldId(questionName, 'No')" class="form-check-label">No</label>
       </div>
@@ -47,6 +49,10 @@ export default {
   },
 
   methods: {
+    updateValue(value) {
+      this.$emit("input", value);
+    },
+
     fieldId(name, val) {
       return `${name}_${val}`;
     }

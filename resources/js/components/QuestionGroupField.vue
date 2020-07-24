@@ -11,6 +11,7 @@
           :id="fieldId(groupName, 'Yes')"
           v-model="groupAnswer"
           value="1"
+          @input="updateGroup(1)"
         />
         <label :for="fieldId(groupName, 'Yes')" class="form-check-label">Yes</label>
       </div>
@@ -22,6 +23,7 @@
           :id="fieldId(groupName, 'No')"
           v-model="groupAnswer"
           value="0"
+          @input="updateGroup(0)"
         />
         <label :for="fieldId(groupName, 'No')" class="form-check-label">No</label>
       </div>
@@ -30,13 +32,15 @@
     <hr v-if="showGroupQuestions && groupStatus" />
 
     <question-field
-      v-for="question in questionGroup"
+      v-for="(question, index) in questionGroup"
       :key="question.id"
       :question="question"
       :group="groupStatus"
       :groupAnswer="groupAnswer"
       :hidden="!showGroupQuestions"
-    />
+      v-model="questionValue[index]"
+      @input="updateValue"
+    ></question-field>
 
     <ul v-if="!showGroupQuestions">
       <li v-for="question in questionGroup" :key="question.id">{{ question.text }}</li>
@@ -54,8 +58,16 @@ export default {
 
   data() {
     return {
-      groupAnswer: null
+      groupAnswer: null,
+      questionValue: null
     };
+  },
+
+  created() {
+    this.questionValue = JSON.parse(JSON.stringify(this.value));
+    Object.keys(this.questionValue).forEach(question => {
+      this.questionValue[question] = null;
+    });
   },
 
   computed: {
@@ -79,6 +91,21 @@ export default {
   methods: {
     fieldId(name, val) {
       return `${name}_${val}`;
+    },
+
+    updateValue() {
+      this.$emit("input", this.questionValue);
+    },
+
+    updateGroup(value) {
+      let newValue = [];
+
+      for (const key in this.questionValue) {
+        newValue[key] = value ? null : 0;
+      }
+
+      this.questionValue = newValue;
+      this.$emit("input", this.questionValue);
     }
   }
 };

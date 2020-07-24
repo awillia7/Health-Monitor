@@ -16,7 +16,11 @@
         <br />
 
         <div class="form-group">
-          <button type="submit" class="btn btn-lg btn-outline-primary btn-block">Submit</button>
+          <button
+            :disabled="!valid"
+            type="submit"
+            class="btn btn-lg btn-outline-primary btn-block"
+          >Submit</button>
         </div>
       </form>
     </div>
@@ -32,7 +36,7 @@ export default {
   data() {
     return {
       questionGroups: null,
-      value: { "1": "answer" }
+      value: null
     };
   },
 
@@ -47,6 +51,18 @@ export default {
         this.value[group][question] = null;
       });
     });
+    this.validate;
+  },
+
+  computed: {
+    valid() {
+      for (const group in this.value) {
+        for (const question in this.value[group]) {
+          if (this.value[group][question] === null) return false;
+        }
+      }
+      return true;
+    }
   },
 
   components: { QuestionGroupField }

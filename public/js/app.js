@@ -1938,6 +1938,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["value", "question", "group", "groupAnswer", "hidden"],
   computed: {
@@ -1954,6 +1956,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    updateValue: function updateValue(value) {
+      this.$emit("input", value);
+    },
     fieldId: function fieldId(name, val) {
       return "".concat(name, "_").concat(val);
     }
@@ -2018,6 +2023,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["value", "questionGroup"],
@@ -2026,8 +2035,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      groupAnswer: null
+      groupAnswer: null,
+      questionValue: null
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.questionValue = JSON.parse(JSON.stringify(this.value));
+    Object.keys(this.questionValue).forEach(function (question) {
+      _this.questionValue[question] = null;
+    });
   },
   computed: {
     groupText: function groupText() {
@@ -2047,6 +2065,19 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     fieldId: function fieldId(name, val) {
       return "".concat(name, "_").concat(val);
+    },
+    updateValue: function updateValue() {
+      this.$emit("input", this.questionValue);
+    },
+    updateGroup: function updateGroup(value) {
+      var newValue = [];
+
+      for (var key in this.questionValue) {
+        newValue[key] = value ? null : 0;
+      }
+
+      this.questionValue = newValue;
+      this.$emit("input", this.questionValue);
     }
   }
 });
@@ -2223,15 +2254,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["questions"],
   data: function data() {
     return {
       questionGroups: null,
-      value: {
-        "1": "answer"
-      }
+      value: null
     };
   },
   created: function created() {
@@ -2246,6 +2279,18 @@ __webpack_require__.r(__webpack_exports__);
         _this.value[group][question] = null;
       });
     });
+    this.validate;
+  },
+  computed: {
+    valid: function valid() {
+      for (var group in this.value) {
+        for (var question in this.value[group]) {
+          if (this.value[group][question] === null) return false;
+        }
+      }
+
+      return true;
+    }
   },
   components: {
     QuestionGroupField: _QuestionGroupField_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -61533,7 +61578,12 @@ var render = function() {
             name: _vm.questionName,
             id: _vm.fieldId(_vm.questionName, "Yes")
           },
-          domProps: { value: _vm.question.value }
+          domProps: { value: _vm.question.value },
+          on: {
+            input: function($event) {
+              return _vm.updateValue(_vm.question.value)
+            }
+          }
         }),
         _vm._v(" "),
         _c(
@@ -61555,7 +61605,12 @@ var render = function() {
             id: _vm.fieldId(_vm.questionName, "No"),
             value: "0"
           },
-          domProps: { checked: _vm.checked }
+          domProps: { checked: _vm.checked },
+          on: {
+            input: function($event) {
+              return _vm.updateValue(0)
+            }
+          }
         }),
         _vm._v(" "),
         _c(
@@ -61619,6 +61674,9 @@ var render = function() {
                 },
                 domProps: { checked: _vm._q(_vm.groupAnswer, "1") },
                 on: {
+                  input: function($event) {
+                    return _vm.updateGroup(1)
+                  },
                   change: function($event) {
                     _vm.groupAnswer = "1"
                   }
@@ -61654,6 +61712,9 @@ var render = function() {
                 },
                 domProps: { checked: _vm._q(_vm.groupAnswer, "0") },
                 on: {
+                  input: function($event) {
+                    return _vm.updateGroup(0)
+                  },
                   change: function($event) {
                     _vm.groupAnswer = "0"
                   }
@@ -61674,7 +61735,7 @@ var render = function() {
       _vm._v(" "),
       _vm.showGroupQuestions && _vm.groupStatus ? _c("hr") : _vm._e(),
       _vm._v(" "),
-      _vm._l(_vm.questionGroup, function(question) {
+      _vm._l(_vm.questionGroup, function(question, index) {
         return _c("question-field", {
           key: question.id,
           attrs: {
@@ -61682,6 +61743,14 @@ var render = function() {
             group: _vm.groupStatus,
             groupAnswer: _vm.groupAnswer,
             hidden: !_vm.showGroupQuestions
+          },
+          on: { input: _vm.updateValue },
+          model: {
+            value: _vm.questionValue[index],
+            callback: function($$v) {
+              _vm.$set(_vm.questionValue, index, $$v)
+            },
+            expression: "questionValue[index]"
           }
         })
       }),
@@ -61947,30 +62016,23 @@ var render = function() {
           _vm._v(" "),
           _c("br"),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-lg btn-outline-primary btn-block",
+                attrs: { disabled: !_vm.valid, type: "submit" }
+              },
+              [_vm._v("Submit")]
+            )
+          ])
         ],
         2
       )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-lg btn-outline-primary btn-block",
-          attrs: { type: "submit" }
-        },
-        [_vm._v("Submit")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

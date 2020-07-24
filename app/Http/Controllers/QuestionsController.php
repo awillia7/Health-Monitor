@@ -15,7 +15,7 @@ class QuestionsController extends Controller
 
     public function index()
     {
-        $questions = Question::all()->sortBy('group_order')->sortBy('question_order');
+        $questions = Question::all()->sortBy('group_order')->sortBy('question_order')->keyBy('id');
 
         return view('questions.index', compact('questions'));
     }

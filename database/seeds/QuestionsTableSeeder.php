@@ -55,7 +55,7 @@ class QuestionsTableSeeder extends Seeder
         DB::table('questions')->insert([
             'text' => 'Nasal Congestion/Runny Nose',
             'group_text' => 'Do you have any of the following symptoms unrelated to a chronic condition?',
-            'value' => 2,
+            'value' => 1,
             'group_order' => 2,
             'question_order' => 4,
             'created_at' => Carbon::now(),
@@ -65,7 +65,7 @@ class QuestionsTableSeeder extends Seeder
         DB::table('questions')->insert([
             'text' => 'Body Aches',
             'group_text' => 'Do you have any of the following symptoms unrelated to a chronic condition?',
-            'value' => 2,
+            'value' => 1,
             'group_order' => 2,
             'question_order' => 5,
             'created_at' => Carbon::now(),
