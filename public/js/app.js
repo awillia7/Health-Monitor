@@ -2394,6 +2394,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["questions"],
   data: function data() {
@@ -2402,9 +2413,32 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.questionGroups = _.groupBy(this.questions, function (question) {
+    var qg = _.groupBy(this.questions, function (question) {
       return question.group_order;
     });
+
+    var value = new Array();
+
+    for (var group in qg) {
+      // let g = {
+      value[group] = {
+        group_text: qg[group][0].group_text,
+        group_order: qg[group][0].group_order,
+        questions: []
+      };
+      console.log(value); // for (const question in qg[group]) {
+      //   const question_id = qg[group][question].id;
+      //   const question_text = qg[group][question].text;
+      //   const question_order = qg[group][question].question_order;
+      //   const question_value = qg[group][question].text;
+      //   this.questionGroups[group].answers[question_order] = {
+      //     id: question_id,
+      //     text: question_text,
+      //     question_order: question_order,
+      //     value: question_value
+      //   };
+      // }
+    }
   }
 });
 
@@ -62068,36 +62102,6 @@ var render = function() {
                 _vm._m(1, true),
                 _vm._v(" "),
                 _c("div", { staticClass: "row mb-2 justify-content-center" }, [
-                  _c("div", { staticClass: "col-10" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.questionGroups[qgIndex][0].group_text,
-                          expression: "questionGroups[qgIndex][0].group_text"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "Group Text" },
-                      domProps: {
-                        value: _vm.questionGroups[qgIndex][0].group_text
-                      },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.questionGroups[qgIndex][0],
-                            "group_text",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
                   _c("div", { staticClass: "col-2" }, [
                     _c("input", {
                       directives: [
@@ -62121,6 +62125,36 @@ var render = function() {
                           _vm.$set(
                             _vm.questionGroups[qgIndex][0],
                             "group_order",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-10" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.questionGroups[qgIndex][0].group_text,
+                          expression: "questionGroups[qgIndex][0].group_text"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "Group Text" },
+                      domProps: {
+                        value: _vm.questionGroups[qgIndex][0].group_text
+                      },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.questionGroups[qgIndex][0],
+                            "group_text",
                             $event.target.value
                           )
                         }
@@ -62153,10 +62187,7 @@ var render = function() {
                               expression: "questionGroups[qgIndex][qIndex].id"
                             }
                           ],
-                          attrs: {
-                            type: "hidden",
-                            name: _vm.questionGroups[qgIndex][qIndex].id
-                          },
+                          attrs: { type: "hidden" },
                           domProps: {
                             value: _vm.questionGroups[qgIndex][qIndex].id
                           },
@@ -62173,6 +62204,44 @@ var render = function() {
                             }
                           }
                         }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-1" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.questionGroups[qgIndex][qIndex]
+                                    .question_order,
+                                expression:
+                                  "questionGroups[qgIndex][qIndex].question_order"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              placeholder: "Question Order"
+                            },
+                            domProps: {
+                              value:
+                                _vm.questionGroups[qgIndex][qIndex]
+                                  .question_order
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.questionGroups[qgIndex][qIndex],
+                                  "question_order",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-10" }, [
                           _c("input", {
@@ -62208,28 +62277,22 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-2" }, [
+                        _c("div", { staticClass: "col-1" }, [
                           _c("input", {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
                                 value:
-                                  _vm.questionGroups[qgIndex][qIndex]
-                                    .question_order,
+                                  _vm.questionGroups[qgIndex][qIndex].value,
                                 expression:
-                                  "questionGroups[qgIndex][qIndex].question_order"
+                                  "questionGroups[qgIndex][qIndex].value"
                               }
                             ],
                             staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              placeholder: "Question Order"
-                            },
+                            attrs: { type: "text" },
                             domProps: {
-                              value:
-                                _vm.questionGroups[qgIndex][qIndex]
-                                  .question_order
+                              value: _vm.questionGroups[qgIndex][qIndex].value
                             },
                             on: {
                               input: function($event) {
@@ -62238,7 +62301,7 @@ var render = function() {
                                 }
                                 _vm.$set(
                                   _vm.questionGroups[qgIndex][qIndex],
-                                  "question_order",
+                                  "value",
                                   $event.target.value
                                 )
                               }
@@ -62278,12 +62341,12 @@ var staticRenderFns = [
       "div",
       { staticClass: "row justify-content-center font-weight-bold" },
       [
-        _c("div", { staticClass: "col-10" }, [
-          _c("label", [_vm._v("Group Text")])
-        ]),
-        _vm._v(" "),
         _c("div", { staticClass: "col-2" }, [
           _c("label", [_vm._v("Group Order")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-10" }, [
+          _c("label", [_vm._v("Group Text")])
         ])
       ]
     )
@@ -62296,12 +62359,16 @@ var staticRenderFns = [
       "div",
       { staticClass: "row justify-content-center font-weight-bold" },
       [
+        _c("div", { staticClass: "col-1" }, [
+          _c("label", [_vm._v("Question Order")])
+        ]),
+        _vm._v(" "),
         _c("div", { staticClass: "col-10" }, [
           _c("label", [_vm._v("Question Text")])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-2" }, [
-          _c("label", [_vm._v("Question Order")])
+        _c("div", { staticClass: "col-1" }, [
+          _c("label", [_vm._v("Question Value")])
         ])
       ]
     )

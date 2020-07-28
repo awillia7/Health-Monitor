@@ -15,9 +15,9 @@ class UsersTableSeeder extends Seeder
         $roles = ["ADMIN"];
         
         $admin = new User;
-        $admin->name = 'ellucian';
-        $admin->username = 'ellucian';
-        $admin->guid = '7f9902dd-d1d2-407e-a372-cf8c42516099';
+        $admin->name = 'hlthcertapi';
+        $admin->username = 'hlthcertapi';
+        $admin->guid = '63579ece-ba3b-4d5c-900c-9f917f29635d';
         $admin->domain = 'default';
         $admin->roles = $roles;
         $admin->save();

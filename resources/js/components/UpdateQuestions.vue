@@ -9,22 +9,15 @@
         <div v-for="(questionGroup, qgIndex) in questionGroups" :key="qgIndex" class="card mb-2">
           <div class="card-header">
             <div class="row justify-content-center font-weight-bold">
-              <div class="col-10">
-                <label>Group Text</label>
-              </div>
               <div class="col-2">
                 <label>Group Order</label>
               </div>
+
+              <div class="col-10">
+                <label>Group Text</label>
+              </div>
             </div>
             <div class="row mb-2 justify-content-center">
-              <div class="col-10">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Group Text"
-                  v-model="questionGroups[qgIndex][0].group_text"
-                />
-              </div>
               <div class="col-2">
                 <input
                   type="text"
@@ -33,15 +26,29 @@
                   v-model="questionGroups[qgIndex][0].group_order"
                 />
               </div>
+
+              <div class="col-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Group Text"
+                  v-model="questionGroups[qgIndex][0].group_text"
+                />
+              </div>
             </div>
           </div>
           <div class="card-body">
             <div class="row justify-content-center font-weight-bold">
+              <div class="col-1">
+                <label>Question Order</label>
+              </div>
+
               <div class="col-10">
                 <label>Question Text</label>
               </div>
-              <div class="col-2">
-                <label>Question Order</label>
+
+              <div class="col-1">
+                <label>Question Value</label>
               </div>
             </div>
             <div
@@ -49,11 +56,16 @@
               :key="qIndex"
               class="row mb-2 justify-content-center"
             >
-              <input
-                type="hidden"
-                :name="questionGroups[qgIndex][qIndex].id"
-                v-model="questionGroups[qgIndex][qIndex].id"
-              />
+              <input type="hidden" v-model="questionGroups[qgIndex][qIndex].id" />
+
+              <div class="col-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Question Order"
+                  v-model="questionGroups[qgIndex][qIndex].question_order"
+                />
+              </div>
 
               <div class="col-10">
                 <input
@@ -64,12 +76,11 @@
                 />
               </div>
 
-              <div class="col-2">
+              <div class="col-1">
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Question Order"
-                  v-model="questionGroups[qgIndex][qIndex].question_order"
+                  v-model="questionGroups[qgIndex][qIndex].value"
                 />
               </div>
             </div>
@@ -95,9 +106,32 @@ export default {
   },
 
   created() {
-    this.questionGroups = _.groupBy(this.questions, question => {
+    let qg = _.groupBy(this.questions, question => {
       return question.group_order;
     });
+
+    let value = new Array();
+    for (const group in qg) {
+      // let g = {
+      value[group] = {
+        group_text: qg[group][0].group_text,
+        group_order: qg[group][0].group_order,
+        questions: []
+      };
+      console.log(value);
+      // for (const question in qg[group]) {
+      //   const question_id = qg[group][question].id;
+      //   const question_text = qg[group][question].text;
+      //   const question_order = qg[group][question].question_order;
+      //   const question_value = qg[group][question].text;
+      //   this.questionGroups[group].answers[question_order] = {
+      //     id: question_id,
+      //     text: question_text,
+      //     question_order: question_order,
+      //     value: question_value
+      //   };
+      // }
+    }
   }
 };
 </script>

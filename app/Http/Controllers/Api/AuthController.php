@@ -29,6 +29,7 @@ class AuthController extends Controller
         }
         else
         {
+            //dd(response());
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
