@@ -2158,6 +2158,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_qrious__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-qrious */ "./node_modules/vue-qrious/lib/cjs.js");
 /* harmony import */ var vue_qrious__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_qrious__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2201,6 +2208,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["screening"],
   computed: {
@@ -2210,6 +2218,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     locked: function locked() {
       return this.screening.score >= this.screening.fail_score;
+    },
+    created_date: function created_date() {
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.screening.created_at).format("MMMM D, YYYY");
     }
   },
   components: {
@@ -61945,12 +61956,25 @@ var render = function() {
               ]),
               _vm._v(" "),
               _vm.locked
-                ? _c("div", { staticClass: "row text-danger" }, [
-                    _vm._v(
-                      "You exhibit health symptoms that indicate potential community risk. Please do not go to class and/or work, and report to the Student Health Services office for testing."
-                    )
-                  ])
-                : _vm._e(),
+                ? _c(
+                    "div",
+                    { staticClass: "row text-danger justify-content-center" },
+                    [
+                      _vm._v(
+                        "You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing."
+                      )
+                    ]
+                  )
+                : _c(
+                    "div",
+                    { staticClass: "row text-success justify-content-center" },
+                    [
+                      _vm._v(
+                        "Your ID card has been activated for " +
+                          _vm._s(_vm.created_date)
+                      )
+                    ]
+                  ),
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),

@@ -14,10 +14,15 @@
                 <span v-else class="text-success">CLEARED</span>
               </h3>
             </div>
+
             <div
-              class="row text-danger"
+              class="row text-danger justify-content-center"
               v-if="locked"
-            >You exhibit health symptoms that indicate potential community risk. Please do not go to class and/or work, and report to the Student Health Services office for testing.</div>
+            >You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing.</div>
+            <div
+              class="row text-success justify-content-center"
+              v-else
+            >Your ID card has been activated for {{ created_date }}</div>
 
             <hr />
 
@@ -42,6 +47,7 @@
 
 <script>
 import VueQrious from "vue-qrious";
+import moment from "moment";
 
 export default {
   props: ["screening"],
@@ -51,8 +57,13 @@ export default {
       const url = window.location.href;
       return `${url}screenings/${this.screening.id}`;
     },
+
     locked() {
       return this.screening.score >= this.screening.fail_score;
+    },
+
+    created_date() {
+      return moment(this.screening.created_at).format("MMMM D, YYYY");
     }
   },
 
