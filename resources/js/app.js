@@ -23,6 +23,7 @@ Vue.component('screening-form', require('./components/ScreeningForm.vue').defaul
 Vue.component('screening-code', require('./components/ScreeningCode.vue').default);
 Vue.component('screening', require('./components/Screening.vue').default);
 Vue.component('update-questions', require('./components/UpdateQuestions.vue').default);
+Vue.component('users', require('./components/Users.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

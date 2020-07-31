@@ -51,7 +51,6 @@ export default {
         this.value[group][question] = null;
       });
     });
-    this.validate;
   },
 
   computed: {

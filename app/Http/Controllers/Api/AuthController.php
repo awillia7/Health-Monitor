@@ -17,7 +17,7 @@ class AuthController extends Controller
 
         $loginData["samaccountname"] = $loginData["username"];
         unset($loginData["username"]);
-        
+
         if (auth()->attempt($loginData))
         {
             $user = auth()->user();
@@ -29,7 +29,6 @@ class AuthController extends Controller
         }
         else
         {
-            //dd(response());
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
