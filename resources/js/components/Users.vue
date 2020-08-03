@@ -31,12 +31,40 @@
               </span>
             </div>
             <hr />
-            <div class="row justify-content-center align-items-center mb-2">
+            <div
+              class="row justify-content-center align-items-center mb-2"
+              v-for="newUser in newUsersData"
+              :key="newUser.id"
+            >
+              <span class="col-2">{{ newUser.name }}</span>
+              <span class="col-2">{{ newUser.username }}</span>
               <span class="col-6">
-                <input class="form-control" type="text" v-model="newUser" />
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" v-model="newUser.manager" />
+                  <label class="form-check-label">Manager</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" v-model="newUser.override" />
+                  <label class="form-check-label">Override</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" v-model="newUser.admin" />
+                  <label class="form-check-label">Admin</label>
+                </div>
               </span>
               <span class="col-2">
-                <button class="btn btn-primary">Add User</button>
+                <button
+                  @click="update(`/users/${newUser.id}`, newUser)"
+                  class="btn btn-primary"
+                >Update</button>
+              </span>
+            </div>
+            <div class="row justify-content-center align-items-center mb-2">
+              <span class="col-6">
+                <input class="form-control" type="text" v-model="userSearch" />
+              </span>
+              <span class="col-2">
+                <button @click="search()" class="btn btn-primary">Add User</button>
               </span>
             </div>
           </div>
@@ -53,7 +81,8 @@ export default {
   data() {
     return {
       usersData: [],
-      newUser: null,
+      newUsersData: [],
+      userSearch: null,
     };
   },
 
@@ -84,11 +113,43 @@ export default {
     update(endpoint, payload) {
       axios
         .put(endpoint, payload)
+        .then(({ data }) => {
+          this.$toast.success(data.message, "Success", { timeout: 3000 });
+        })
+        .catch(({ response }) => {
+          this.$toast.error(response.data.message, "Error", { timeout: 3000 });
+        });
+    },
+
+    search() {
+      axios
+        .post("/users/search", { userSearch: this.userSearch })
+        .then(({ data, status }) => {
+          if (status === 200) {
+            let oldUser = this.usersData.find((user) => user.id === data.id);
+            let newUser = this.newUsersData.find((user) => (user.id = data.id));
+
+            if (!oldUser && !newUser) {
+              this.newUsersData.push(data);
+              this.$toast.success("New user added", "Success", {
+                timeout: 3000,
+              });
+            } else {
+              this.$toast.success("User already added", "Warning", {
+                timeout: 3000,
+              });
+            }
+          } else if (status === 204) {
+            this.$toast.success("User not found", "Warning", {
+              timeout: 3000,
+            });
+          }
+        })
         .catch(({ response }) => {
           this.$toast.error(response.data.message, "Error", { timeout: 3000 });
         })
-        .then(({ data }) => {
-          this.$toast.success(data.message, "Success", { timeout: 3000 });
+        .then(() => {
+          this.userSearch = null;
         });
     },
   },
