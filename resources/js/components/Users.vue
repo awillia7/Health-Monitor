@@ -27,7 +27,7 @@
                 </div>
               </span>
               <span class="col-2">
-                <button class="btn btn-primary">Update</button>
+                <button @click="update(`/users/${user.id}`, user)" class="btn btn-primary">Update</button>
               </span>
             </div>
             <hr />
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       usersData: [],
-      newUser: null
+      newUser: null,
     };
   },
 
@@ -75,10 +75,23 @@ export default {
         username,
         admin,
         manager,
-        override
+        override,
       });
     }
-  }
+  },
+
+  methods: {
+    update(endpoint, payload) {
+      axios
+        .put(endpoint, payload)
+        .catch(({ response }) => {
+          this.$toast.error(response.data.message, "Error", { timeout: 3000 });
+        })
+        .then(({ data }) => {
+          this.$toast.success(data.message, "Success", { timeout: 3000 });
+        });
+    },
+  },
 };
 </script>
       

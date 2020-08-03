@@ -18,6 +18,8 @@ class User extends Authenticatable implements LdapAuthenticatable
         'roles' => 'array'
     ];
 
+    protected $fillable = ['roles'];
+
     /**
      * The attributes that should be hidden for arrays.
      *

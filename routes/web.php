@@ -21,5 +21,5 @@ Auth::routes([
 
 Route::resource('screenings', 'ScreeningsController')->only('show');
 Route::resource('questions', 'QuestionsController')->only('index');
-Route::resource('users', 'UsersController')->only('index');
+Route::resource('users', 'UsersController')->only('index', 'update');
 Route::post('/screenings/submit', 'SubmitScreeningController');
