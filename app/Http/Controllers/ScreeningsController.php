@@ -7,6 +7,8 @@ use App\Http\Requests\StoreScreening;
 use App\Screening;
 use App\Answer;
 use App\Question;
+use Carbon\Carbon;
+
 
 class ScreeningsController extends Controller
 {
@@ -17,11 +19,19 @@ class ScreeningsController extends Controller
 
     public function show(Screening $screening)
     {
-        //dd($screening->id);
         $res = Screening::where('id', $screening->id)->with(['answers' => function($answer) {
             $answer->with(['question']);
         }, 'user'])->first();
 
         return view('screenings.show', ['screening' => $res]);
+    }
+
+    public function index()
+    {
+        $screenings = Screening::with(['user' => function ($q) {
+            $q->orderBy('name', 'asc');
+        }])->whereDate('screenings.created_at', Carbon::today())->get();
+
+        return view('screenings.index', compact('screenings'));
     }
 }

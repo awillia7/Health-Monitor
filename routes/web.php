@@ -19,7 +19,7 @@ Auth::routes([
     'register' => false,
 ]);
 
-Route::resource('screenings', 'ScreeningsController')->only('show');
+Route::resource('screenings', 'ScreeningsController')->only('show', 'index');
 Route::resource('questions', 'QuestionsController')->only('index');
 Route::resource('users', 'UsersController')->only('index', 'update');
 Route::post('/users/search', "UserSearchController");

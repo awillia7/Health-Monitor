@@ -15,7 +15,7 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::whereNotNull('roles')->orderBy('name', 'asc')->get();
+        $users = User::whereNotNull('roles')->where('username', '!=', getenv('ADMIN_ACCOUNT'))->orderBy('name', 'asc')->get();
 
         return view('users.index', compact('users'));
     }
