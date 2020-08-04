@@ -24,4 +24,4 @@ Route::resource('questions', 'QuestionsController')->only('index');
 Route::resource('users', 'UsersController')->only('index', 'update');
 Route::post('/users/search', "UserSearchController");
 Route::post('/screenings/submit', 'SubmitScreeningController');
-
+Route::patch('/screenings/{screening}/override', 'OverrideScreeningController');

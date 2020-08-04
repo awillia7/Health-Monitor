@@ -34,6 +34,11 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this->hasMany(Screening::class);
     }
 
+    public function overrideScreenings()
+    {
+        return $this->hasMany(Screening::class);
+    }
+
     public function getTodayScreening()
     {
         return $this->screenings()->with(['answers' => function($answer) {

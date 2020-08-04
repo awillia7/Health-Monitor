@@ -5,7 +5,13 @@
         <div class="card">
           <div class="card-header">
             <div class="row justify-content-center text-center">
-              <h4>{{ screening.user.name }} - {{ created_date }}</h4>
+              <h4>{{ screeningData.user.name }} - {{ created_date }}</h4>
+            </div>
+            <div v-if="addOverrideButton" class="row justify-content-center text-center">
+              <button
+                @click="overrideScreening(screeningData)"
+                class="btn btn-primary text-right"
+              >Override</button>
             </div>
           </div>
 
@@ -21,7 +27,7 @@
 
             <div
               class="row align-items-center justify-content-center align-middle mb-2"
-              v-for="answer in screening.answers"
+              v-for="answer in screeningData.answers"
               :key="answer.id"
             >
               <span class="col-8">{{ answer.question.text }}</span>
@@ -39,16 +45,49 @@
 import moment from "moment";
 
 export default {
-  props: ["screening"],
+  props: ["screening", "override"],
+
+  data() {
+    return {
+      screeningData: null,
+    };
+  },
+
+  created() {
+    this.screeningData = JSON.parse(JSON.stringify(this.screening));
+  },
 
   computed: {
     locked() {
-      return this.screening.score >= this.screening.fail_score;
+      return (
+        this.screeningData.score >= this.screeningData.fail_score &&
+        this.screeningData.override_user_id === null
+      );
+    },
+
+    addOverrideButton() {
+      return this.locked && this.override;
     },
 
     created_date() {
-      return moment(this.screening.created_at).format("MMMM D, YYYY");
-    }
-  }
+      return moment(this.screeningData.created_at).format("MMMM D, YYYY");
+    },
+  },
+
+  methods: {
+    overrideScreening(screening) {
+      axios
+        .patch(`/screenings/${screening.id}/override`)
+        .then(({ data }) => {
+          this.screeningData.override_user_id = data.screening.override_user_id;
+          this.screeningData.override_at = data.screening.override_at;
+
+          this.$toast.success(data.message, "Success", { timeout: 3000 });
+        })
+        .catch(({ response }) => {
+          this.$toast.error(response.data.message, "Error", { timeout: 3000 });
+        });
+    },
+  },
 };
 </script>

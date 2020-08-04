@@ -9,7 +9,6 @@ use App\Answer;
 use App\Question;
 use Carbon\Carbon;
 
-
 class ScreeningsController extends Controller
 {
     public function __construct()
@@ -28,9 +27,12 @@ class ScreeningsController extends Controller
 
     public function index()
     {
+        $this->authorize('index', Screening::class);
+
         $screenings = Screening::with(['user' => function ($q) {
             $q->orderBy('name', 'asc');
-        }])->whereDate('screenings.created_at', Carbon::today())->get();
+        }])->whereDate('screenings.created_at', Carbon::today())
+        ->where('score', '>=', \DB::raw('fail_score'))->get();
 
         return view('screenings.index', compact('screenings'));
     }
