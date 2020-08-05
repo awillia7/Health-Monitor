@@ -6,10 +6,10 @@
         <div class="card-body form-group row justify-content-center mb-0">
           <label for="failScore" class="col-2 col-form-label font-weight-bold">Fail Score</label>
           <div class="col-4">
-            <input class="form-control" type="text" name="failScore" v-model.number="failScoreData" />
+            <input class="form-control" disabled type="text" name="failScore" v-model.number="failScoreData" />
           </div>
           <button
-            :disabled="disableFailScore"
+            disabled
             @click="updateFailScore()"
             class="col-2 btn btn-outline-primary"
           >Update Fail Score</button>
