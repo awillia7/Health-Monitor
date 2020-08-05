@@ -59,14 +59,17 @@ export default {
     },
 
     locked() {
-      return this.screening.score >= this.screening.fail_score;
+      return (
+        this.screening.score >= this.screening.fail_score &&
+        this.screening.override_user_id === null
+      );
     },
 
     created_date() {
       return moment(this.screening.created_at).format("MMMM D, YYYY");
-    }
+    },
   },
 
-  components: { VueQrious }
+  components: { VueQrious },
 };
 </script>
