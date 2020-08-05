@@ -10,7 +10,7 @@
             <div v-if="addOverrideButton" class="row justify-content-center text-center">
               <button
                 @click="overrideScreening(screeningData)"
-                class="btn btn-primary text-right"
+                class="btn btn-outline-primary text-right"
               >Override</button>
             </div>
           </div>

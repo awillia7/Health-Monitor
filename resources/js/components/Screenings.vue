@@ -28,7 +28,7 @@
                   v-if="override"
                   @click="overrideScreening(screening)"
                   :disabled="screening.override_user_id"
-                  class="btn btn-primary"
+                  class="btn btn-outline-primary"
                 >Override</button>
               </span>
             </div>

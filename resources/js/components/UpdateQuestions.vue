@@ -1,87 +1,80 @@
 <template>
   <div class="container">
     <div class="row justify-content-center text-center">
-      <form class="w-100">
+      <div class="card mb-5 w-100">
+        <h3 class="card-header">Update Fail Score</h3>
+        <div class="card-body form-group row justify-content-center mb-0">
+          <label for="failScore" class="col-2 col-form-label font-weight-bold">Fail Score</label>
+          <div class="col-4">
+            <input class="form-control" type="text" name="failScore" v-model.number="failScoreData" />
+          </div>
+          <button
+            :disabled="disableFailScore"
+            @click="updateFailScore()"
+            class="col-2 btn btn-outline-primary"
+          >Update Fail Score</button>
+        </div>
+      </div>
+
+      <form class="w-100" action="/questions/update-all" method="post">
+        <slot></slot>
+
         <div class="card mb-2">
           <h3 class="card-header">Update Questions</h3>
         </div>
 
-        <div v-for="(questionGroup, qgIndex) in questionGroups" :key="qgIndex" class="card mb-2">
-          <div class="card-header">
-            <div class="row justify-content-center font-weight-bold">
-              <div class="col-2">
-                <label>Group Order</label>
+        <div class="card-body">
+          <div v-for="(questionGroup, qgIndex) in questionsData" :key="qgIndex" class="card mb-2">
+            <div class="card-header">
+              <div class="row justify-content-center font-weight-bold">
+                <div class="col-12">
+                  <label>Group Text</label>
+                </div>
               </div>
-
-              <div class="col-10">
-                <label>Group Text</label>
-              </div>
-            </div>
-            <div class="row mb-2 justify-content-center">
-              <div class="col-2">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Group Order"
-                  v-model="questionGroups[qgIndex][0].group_order"
-                />
-              </div>
-
-              <div class="col-10">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Group Text"
-                  v-model="questionGroups[qgIndex][0].group_text"
-                />
+              <div class="row mb-2 justify-content-center" v-if="questionsData[qgIndex].group_text">
+                <div class="col-12">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Group Text"
+                    :name="`group-text_${questionsData[qgIndex].group_id}`"
+                    v-model="questionsData[qgIndex].group_text"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="row justify-content-center font-weight-bold">
-              <div class="col-1">
-                <label>Question Order</label>
-              </div>
+            <div class="card-body">
+              <div class="row justify-content-center font-weight-bold">
+                <div class="col-10">
+                  <label>Question Text</label>
+                </div>
 
-              <div class="col-10">
-                <label>Question Text</label>
+                <div class="col-2">
+                  <label>Question Value</label>
+                </div>
               </div>
+              <div
+                v-for="(question, qIndex) in questionGroup.questions"
+                :key="qIndex"
+                class="row mb-2 justify-content-center"
+              >
+                <div class="col-10">
+                  <input
+                    type="text"
+                    class="form-control"
+                    :name="`text_${questionsData[qgIndex].questions[qIndex].id}`"
+                    v-model="questionsData[qgIndex].questions[qIndex].text"
+                  />
+                </div>
 
-              <div class="col-1">
-                <label>Question Value</label>
-              </div>
-            </div>
-            <div
-              v-for="(question, qIndex) in questionGroup"
-              :key="qIndex"
-              class="row mb-2 justify-content-center"
-            >
-              <input type="hidden" v-model="questionGroups[qgIndex][qIndex].id" />
-
-              <div class="col-1">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Question Order"
-                  v-model="questionGroups[qgIndex][qIndex].question_order"
-                />
-              </div>
-
-              <div class="col-10">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Question Text"
-                  v-model="questionGroups[qgIndex][qIndex].text"
-                />
-              </div>
-
-              <div class="col-1">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="questionGroups[qgIndex][qIndex].value"
-                />
+                <div class="col-2">
+                  <input
+                    type="text"
+                    class="form-control"
+                    :name="`value_${questionsData[qgIndex].questions[qIndex].id}`"
+                    v-model="questionsData[qgIndex].questions[qIndex].value"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -97,41 +90,65 @@
 
 <script>
 export default {
-  props: ["questions"],
+  props: ["questions", "failScore"],
 
   data() {
     return {
-      questionGroups: null
+      questionsData: [],
+      failScoreData: null,
     };
   },
 
+  computed: {
+    disableFailScore() {
+      return !(
+        this.failScoreData === parseInt(this.failScoreData, 10) &&
+        parseInt(this.failScoreData, 10) > 0
+      );
+    },
+  },
+
+  methods: {
+    updateFailScore() {
+      axios
+        .put("/fail-score", {
+          "failScore": this.failScoreData,
+        })
+        .then(({ data }) => {
+          console.log(data);
+          this.$toast.success(data.message, "Success", { timeout: 3000 });
+        })
+        .catch(({ response }) => {
+          this.$toast.error(response.data.message, "Error", { timeout: 3000 });
+        });
+    },
+  },
+
   created() {
-    let qg = _.groupBy(this.questions, question => {
+    this.failScoreData = this.failScore;
+
+    let qg = _.groupBy(this.questions, (question) => {
       return question.group_order;
     });
 
-    let value = new Array();
     for (const group in qg) {
-      // let g = {
-      value[group] = {
+      let gData = {
+        group_id: qg[group][0].group_order,
         group_text: qg[group][0].group_text,
-        group_order: qg[group][0].group_order,
-        questions: []
+        questions: [],
       };
-      console.log(value);
-      // for (const question in qg[group]) {
-      //   const question_id = qg[group][question].id;
-      //   const question_text = qg[group][question].text;
-      //   const question_order = qg[group][question].question_order;
-      //   const question_value = qg[group][question].text;
-      //   this.questionGroups[group].answers[question_order] = {
-      //     id: question_id,
-      //     text: question_text,
-      //     question_order: question_order,
-      //     value: question_value
-      //   };
-      // }
+
+      for (const question in qg[group]) {
+        let qData = {
+          id: qg[group][question].id,
+          text: qg[group][question].text,
+          value: qg[group][question].value,
+        };
+        gData.questions.push(qData);
+      }
+
+      this.questionsData.push(gData);
     }
-  }
+  },
 };
 </script>

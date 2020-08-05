@@ -21,7 +21,9 @@ Auth::routes([
 
 Route::resource('screenings', 'ScreeningsController')->only('show', 'index');
 Route::resource('questions', 'QuestionsController')->only('index');
+Route::post('/questions/update-all', 'UpdateAllQuestionsController');
 Route::resource('users', 'UsersController')->only('index', 'update');
 Route::post('/users/search', "UserSearchController");
 Route::post('/screenings/submit', 'SubmitScreeningController');
 Route::patch('/screenings/{screening}/override', 'OverrideScreeningController');
+Route::put('/fail-score', 'UpdateFailScoreController');

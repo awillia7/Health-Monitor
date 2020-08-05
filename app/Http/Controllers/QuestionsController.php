@@ -15,8 +15,11 @@ class QuestionsController extends Controller
 
     public function index()
     {
-        $questions = Question::all()->sortBy('group_order')->sortBy('question_order')->keyBy('id');
+        $questions = Question::orderBy('group_order')->orderBy('question_order')->get();
 
-        return view('questions.index', compact('questions'));
+        return view('questions.index', [
+            'questions' => $questions,
+            'fail_score' => getenv('HEALTH_MONITOR_FAIL_SCORE')
+        ]);
     }
 }

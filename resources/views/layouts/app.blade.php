@@ -61,6 +61,7 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('questions.index') }}">Questions</a>
                                         <a class="dropdown-item" href="{{ route('users.index') }}">Users</a>
                                     </div>
                                 </li>
