@@ -127,7 +127,7 @@ export default {
         .then(({ data, status }) => {
           if (status === 200) {
             let oldUser = this.usersData.find((user) => user.id === data.id);
-            let newUser = this.newUsersData.find((user) => (user.id = data.id));
+            let newUser = this.newUsersData.find((user) => user.id === data.id);
 
             if (!oldUser && !newUser) {
               this.newUsersData.push(data);
