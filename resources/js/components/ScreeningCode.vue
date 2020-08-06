@@ -3,38 +3,38 @@
     <div class="row justify-content-center text-center">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header">
-            <h3>Today's Screening</h3>
-          </div>
-          <div class="card-body">
+          <div class="card-header bg-dark">
+            <h4 class="row justify-content-center text-center text-white">Today's Screening</h4>
             <div class="row justify-content-center">
               <h3 class="row">
-                Status:&nbsp;
-                <span v-if="locked" class="text-danger">NOT CLEARED</span>
+                <span v-if="overrideFlag" class="text-warning">OVERRIDE</span>
+                <span v-else-if="locked" class="text-danger">NOT CLEARED</span>
                 <span v-else class="text-success">CLEARED</span>
               </h3>
             </div>
 
             <div
+              class="row text-warning justify-content-center"
+              v-if="overrideFlag"
+            >Your ID card has been activated for {{ created_date }}</div>
+            <div
               class="row text-danger justify-content-center"
-              v-if="locked"
+              v-else-if="locked"
             >You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing.</div>
             <div
               class="row text-success justify-content-center"
               v-else
             >Your ID card has been activated for {{ created_date }}</div>
-
-            <hr />
-
-            <div
-              class="row justify-content-center"
-              v-for="answer in screening.answers"
-              :key="answer.id"
-            >
-              <h4 v-if="answer.value">
+          </div>
+          <div class="card-body">
+            <div v-for="answer in screening.answers" :key="answer.id">
+              <div
+                v-if="answer.value"
+                class="row align-items-center justify-content-center align-middle mb-2"
+              >
                 <span class="col-8">{{ answer.question.text }}</span>
-                <span class="col-4 text-danger">Yes</span>
-              </h4>
+                <span class="col-4 text-center text-danger">Yes</span>
+              </div>
             </div>
 
             <vue-qrious class="mt-2" :value="codeUrl" :size="250" />
@@ -59,10 +59,11 @@ export default {
     },
 
     locked() {
-      return (
-        this.screening.score >= this.screening.fail_score &&
-        this.screening.override_user_id === null
-      );
+      return this.screening.score >= this.screening.fail_score;
+    },
+
+    overrideFlag() {
+      return this.screening.override_user_id !== null;
     },
 
     created_date() {

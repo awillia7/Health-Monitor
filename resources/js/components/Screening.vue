@@ -3,8 +3,8 @@
     <div class="row justify-content-center">
       <div class="col-12">
         <div class="card">
-          <div class="card-header">
-            <div class="row justify-content-center text-center">
+          <div class="card-header bg-dark">
+            <div class="row justify-content-center text-center text-white">
               <h4>{{ screeningData.user.name }} - {{ created_date }}</h4>
             </div>
             <div v-if="addOverrideButton" class="row justify-content-center text-center">
@@ -13,18 +13,17 @@
                 class="btn btn-outline-primary text-right"
               >Override</button>
             </div>
-          </div>
 
-          <div class="card-body">
             <div class="row justify-content-center">
               <h3>
-                <span v-if="locked" class="text-danger">NOT CLEARED</span>
+                <span v-if="overrideFlag" class="text-warning">OVERRIDE</span>
+                <span v-else-if="locked" class="text-danger">NOT CLEARED</span>
                 <span v-else class="text-success">CLEARED</span>
               </h3>
             </div>
+          </div>
 
-            <hr />
-
+          <div class="card-body">
             <div
               class="row align-items-center justify-content-center align-middle mb-2"
               v-for="answer in screeningData.answers"
@@ -59,14 +58,15 @@ export default {
 
   computed: {
     locked() {
-      return (
-        this.screeningData.score >= this.screeningData.fail_score &&
-        this.screeningData.override_user_id === null
-      );
+      return this.screeningData.score >= this.screeningData.fail_score;
+    },
+
+    overrideFlag() {
+      return this.screening.override_user_id !== null;
     },
 
     addOverrideButton() {
-      return this.locked && this.override;
+      return this.locked && this.override && !this.overrideFlag;
     },
 
     created_date() {
