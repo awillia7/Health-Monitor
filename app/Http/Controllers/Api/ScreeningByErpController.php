@@ -29,9 +29,11 @@ class ScreeningByErpController extends Controller
         if (!$screening) {
             $status = null;
         } else {
-            $status = ($screening->fail_score >= $screening->score
-                && $screening->override_user_id === null
-            ) ? 'NOT CLEARED' : 'CLEARED';
+            if ($screening->override_user_id || $screening->score < $screening->fail_score) {
+                $status = 'CLEARED';
+            } else {
+                $status = 'NOT CLEARED';
+            }
         }
 
         return response()->json([
