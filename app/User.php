@@ -43,7 +43,7 @@ class User extends Authenticatable implements LdapAuthenticatable
     {
         return $this->screenings()->with(['answers' => function($answer) {
             $answer->with(['question']);
-        }])->whereDate('created_at', Carbon::today())->first();
+        }, 'user'])->whereDate('created_at', Carbon::today())->first();
     }
 
     public function hasRole($role)

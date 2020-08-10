@@ -13,18 +13,23 @@
               </h3>
             </div>
 
-            <div
-              class="row text-warning justify-content-center"
+            <span
+              class="row text-white justify-content-center"
               v-if="overrideFlag"
-            >Your ID card has been activated for {{ created_date }}</div>
-            <div
-              class="row text-danger justify-content-center"
-              v-else-if="locked"
-            >You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing.</div>
-            <div
-              class="row text-success justify-content-center"
+            >Your ID card has been activated for {{ created_date }}</span>
+            <span class="row text-white justify-content-center" v-else-if="locked">
+              <div class="d-inline">
+                Please click
+                <a
+                  :href="`https://mvnu.pharos360.com/referral_create.php?username=%5b${screening.user.erp_id}%5d`"
+                  class="d-inline text-danger"
+                >here</a> for a short form about your symptoms. Login is required, and then in the middle of the page on the Referral drop-down menu, please select COVID-19 Self-Referral.
+              </div>
+            </span>
+            <span
+              class="row text-white justify-content-center"
               v-else
-            >Your ID card has been activated for {{ created_date }}</div>
+            >Your ID card has been activated for {{ created_date }}</span>
           </div>
           <div class="card-body">
             <div v-for="answer in screening.answers" :key="answer.id">
