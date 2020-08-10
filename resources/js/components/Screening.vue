@@ -7,12 +7,6 @@
             <div class="row justify-content-center text-center text-white">
               <h4>{{ screeningData.user.name }} - {{ created_date }}</h4>
             </div>
-            <div v-if="addOverrideButton" class="row justify-content-center text-center">
-              <button
-                @click="overrideScreening(screeningData)"
-                class="btn btn-outline-primary text-right"
-              >Override</button>
-            </div>
 
             <div class="row justify-content-center">
               <h3>
@@ -20,6 +14,13 @@
                 <span v-else-if="locked" class="text-danger">NOT CLEARED</span>
                 <span v-else class="text-success">CLEARED</span>
               </h3>
+            </div>
+
+            <div v-if="addOverrideButton" class="row justify-content-center text-center">
+              <button
+                @click="overrideScreening(screeningData)"
+                class="btn btn-outline-danger text-right"
+              >Override</button>
             </div>
           </div>
 
@@ -62,7 +63,7 @@ export default {
     },
 
     overrideFlag() {
-      return this.screening.override_user_id !== null;
+      return this.screeningData.override_user_id;
     },
 
     addOverrideButton() {

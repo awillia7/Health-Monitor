@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SubmitScreening;
 use App\Screening;
 use App\Answer;
+use App\Mail\ScreeningUncleared;
+use Illuminate\Support\Facades\Mail;
 
 class SubmitScreeningController extends Controller
 {
@@ -46,6 +48,12 @@ class SubmitScreeningController extends Controller
         // Update Screening score
         $screening->score = $screeningScore;
         $screening->save();
+
+        // Send email if the screening failed
+        if ($screening->score >= $screening->fail_score) {
+            $emails = explode(";", env('HEALTH_MONITOR_ALERT_EMAILS'));
+            Mail::to($emails)->send(new ScreeningUncleared($screening));
+        }
 
         return redirect()->route('home');
     }
