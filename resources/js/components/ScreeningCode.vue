@@ -19,7 +19,7 @@
             >Your ID card has been activated for {{ created_date }}</span>
             <span class="row text-white justify-content-center" v-else-if="locked">
               <div class="d-inline">
-                Please click
+                You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing. Please click
                 <a
                   :href="`https://mvnu.pharos360.com/referral_create.php?username=%5b${screening.user.erp_id}%5d`"
                   class="d-inline text-danger"
