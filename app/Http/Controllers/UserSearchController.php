@@ -54,7 +54,7 @@ class UserSearchController extends Controller
         // Search AD for valid user
         if (preg_match("/^\d+$/", $request->userSearch)) {
             // Search by ID
-            $user = LdapUser::where('employeeID', '=', $search)->first();
+            $user = LdapUser::where('employeeNumber', '=', $search)->first();
         } else {
             // Search by username
             $user = LdapUser::where('sAMAccountName', '=', $search)->first();
@@ -66,9 +66,11 @@ class UserSearchController extends Controller
             // Add new user found in LDAP
             $newUser = new User();
             $newUser->name = $user->getFirstAttribute('displayName');
+            $newUser->first_name = $user->getFirstAttribute('givenName');
+            $newUser->last_name = $user->getFirstAttribute('sn'); 
             $newUser->username = $user->getFirstAttribute('samAccountName');
             $newUser->email = $user->getFirstAttribute('mail');
-            $newUser->erp_id = $user->getFirstAttribute('employeeID');
+            $newUser->erp_id = $user->getFirstAttribute('employeeNumber');
             $newUser->infinias_id = $user->getFirstAttribute('extensionAttribute13');
             $newUser->guid = $user->getConvertedGuid();
             $newUser->domain = 'default';

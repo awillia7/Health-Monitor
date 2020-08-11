@@ -77,9 +77,11 @@ return [
                 'sync_passwords' => false,
                 'sync_attributes' => [
                     'name' => 'displayName',
+                    'first_name' => 'givenName',
+                    'last_name' => 'sn',
                     'username' => 'sAMAccountName',
                     'email' => 'mail',
-                    'erp_id' => 'employeeID',
+                    'erp_id' => 'employeeNumber',
                     'infinias_id' => 'extensionAttribute13',
                 ]   
             ]
