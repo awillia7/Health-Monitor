@@ -9,6 +9,7 @@ use LdapRecord\Models\ActiveDirectory\User AS LdapUser;
 
 class ScreeningByErpController extends Controller
 {
+
     /**
      * Handle the incoming request.
      *
@@ -51,11 +52,7 @@ class ScreeningByErpController extends Controller
         if (!$screening) {
             $status = null;
         } else {
-            if ($screening->override_user_id || $screening->score < $screening->fail_score) {
-                $status = 'CLEARED';
-            } else {
-                $status = 'NOT CLEARED';
-            }
+            $status = $screening->status;
         }
 
         return response()->json([

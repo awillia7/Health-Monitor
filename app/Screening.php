@@ -36,4 +36,13 @@ class Screening extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function getStatusAttribute()
+    {
+        if ($this->override_user_id || $this->score < $this->fail_score) {
+            return 'CLEARED';
+        } else {
+            return 'NOT CLEARED';
+        }
+    }
 }
