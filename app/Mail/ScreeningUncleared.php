@@ -36,7 +36,14 @@ class ScreeningUncleared extends Mailable
         $subject = "Uncleared Screening - {$user->name} ({$user->erp_id})";
         $answers = Answer::where('screening_id', '=', $this->screening->id)->with(['question'])->get();
         $url = env('APP_URL');
-        return $this->subject($subject)->markdown('emails.screenings.uncleared', [
+        $from_email = env('MAIL_FROM_ADDRESS');
+        $from_name = env('MAIL_FROM_NAME');
+        if ($user->email) {
+            $from_email = $user->email;
+            $from_name = $user->name;
+        }
+
+        return $this->from($from_email, $from_name)->subject($subject)->markdown('emails.screenings.uncleared', [
             "url" => "{$url}/screenings/{$this->screening->id}",
             "user" => $user,
             "answers" => $answers

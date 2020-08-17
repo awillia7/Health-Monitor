@@ -51,8 +51,10 @@ class SubmitScreeningController extends Controller
 
         // Send email if the screening failed
         if ($screening->score >= $screening->fail_score) {
-            $emails = explode(";", env('HEALTH_MONITOR_ALERT_EMAILS'));
-            Mail::to($emails)->send(new ScreeningUncleared($screening));
+            $to_emails = explode(";", env('HEALTH_MONITOR_ALERT_EMAILS'));
+            
+            Mail::to($to_emails)
+                ->send(new ScreeningUncleared($screening));
         }
 
         return redirect()->route('home');
