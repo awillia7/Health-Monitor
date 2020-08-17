@@ -50,7 +50,12 @@ class ScreeningByErpController extends Controller
         
         $status = null;
         if (!$screening) {
-            $status = null;
+            // Default CLEARED for employee users (email domain not @mail.mvnu.edu)
+            if (preg_match("/@mail\.mvnu\.edu/i", $user->email)) {
+                $status = null;
+            } else {
+                $status = 'CLEARED';
+            }
         } else {
             $status = $screening->status;
         }
