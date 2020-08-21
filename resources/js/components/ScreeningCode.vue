@@ -21,7 +21,7 @@
               <div class="d-inline">
                 You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing. Please click
                 <a
-                  :href="`https://mvnu.pharos360.com/referral_create.php?username=%5b${screening.user.erp_id}%5d`"
+                  :href="`https://mvnu.pharos360.com/referral_create.php?username=${screening.user.erp_id}`"
                   class="d-inline text-danger"
                 >here</a> for a short form about your symptoms. Login is required, and then in the middle of the page on the Referral drop-down menu, please select COVID-19 Self-Referral.
               </div>
