@@ -19,11 +19,18 @@
             >Your ID card has been activated for {{ created_date }}</span>
             <span class="row text-white justify-content-center" v-else-if="locked">
               <div class="d-inline">
-                You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing. Please click
-                <a
-                  :href="`https://mvnu.pharos360.com/referral_create.php?username=${screening.user.erp_id}`"
-                  class="d-inline text-danger"
-                >here</a> for a short form about your symptoms. Login is required, and then in the middle of the page on the Referral drop-down menu, please select COVID-19 Self-Referral.
+                You exhibit health symptoms that indicate potential community risk. Please do not go to class, chapel, and/or work, and report to the Student Health Services office for testing.
+                <h5 class="d-inline">
+                  <u>
+                    <a
+                      :href="`https://mvnu.pharos360.com/referral_create.php?username=${screening.user.erp_id}`"
+                      class="d-inline text-danger"
+                    >
+                      Please click
+                      here for a short form about your symptoms.
+                    </a>
+                  </u>
+                </h5>Login is required, and then in the middle of the page on the Referral drop-down menu, please select COVID-19 Self-Referral.
               </div>
             </span>
             <span
