@@ -22,6 +22,10 @@
                   <label class="form-check-label">Override</label>
                 </div>
                 <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" v-model="user.delete" />
+                  <label class="form-check-label">Delete</label>
+                </div>
+                <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" v-model="user.admin" />
                   <label class="form-check-label">Admin</label>
                 </div>
@@ -46,6 +50,10 @@
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" v-model="newUser.override" />
                   <label class="form-check-label">Override</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" v-model="newUser.delete" />
+                  <label class="form-check-label">Delete</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" v-model="newUser.admin" />
@@ -95,6 +103,7 @@ export default {
       let roles = this.users[user].roles;
       let admin = roles.includes("ADMIN");
       let manager = roles.includes("MANAGER");
+      let delete_screening = roles.includes("DELETE");
       let override = roles.includes("OVERRIDE");
 
       this.usersData.push({
@@ -105,6 +114,7 @@ export default {
         admin,
         manager,
         override,
+        delete: delete_screening,
       });
     }
   },
@@ -126,8 +136,10 @@ export default {
         .post("/users/search", { userSearch: this.userSearch })
         .then(({ data, status }) => {
           if (status === 200) {
-            let oldUser = this.usersData.find((user) => user.id === data.id);
-            let newUser = this.newUsersData.find((user) => user.id === data.id);
+            const oldUser = this.usersData.find((user) => user.id === data.id);
+            const newUser = this.newUsersData.find(
+              (user) => user.id === data.id
+            );
 
             if (!oldUser && !newUser) {
               this.newUsersData.push(data);

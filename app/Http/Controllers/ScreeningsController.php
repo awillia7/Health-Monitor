@@ -36,4 +36,21 @@ class ScreeningsController extends Controller
 
         return view('screenings.index', compact('screenings'));
     }
+
+    public function destroy(Screening $screening)
+    {
+        $this->authorize('delete', $screening);
+
+        $id = $screening->id;
+        $screening->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'id' => $id,
+                'message' => "The screening has been deleted."
+            ]);
+        }
+
+        return redirect()->route('screenings.index');
+    }
 }

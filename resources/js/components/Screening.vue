@@ -16,11 +16,20 @@
               </h3>
             </div>
 
-            <div v-if="addOverrideButton" class="row justify-content-center text-center">
+            <div
+              v-if="addOverrideButton || delete_role"
+              class="row justify-content-center text-center"
+            >
               <button
                 @click="overrideScreening(screeningData)"
-                class="btn btn-outline-danger text-right"
+                v-if="addOverrideButton"
+                class="btn btn-outline-primary text-right mr-2 mb-2"
               >Override</button>
+              <button
+                v-if="delete_role"
+                @click="destroy()"
+                class="btn btn-outline-danger text-right mr-2 mb-2"
+              >Delete</button>
             </div>
           </div>
 
@@ -45,7 +54,7 @@
 import moment from "moment";
 
 export default {
-  props: ["screening", "override"],
+  props: ["screening", "override_role", "delete_role"],
 
   data() {
     return {
@@ -67,7 +76,7 @@ export default {
     },
 
     addOverrideButton() {
-      return this.locked && this.override && !this.overrideFlag;
+      return this.locked && this.override_role && !this.overrideFlag;
     },
 
     created_date() {
@@ -88,6 +97,49 @@ export default {
         .catch(({ response }) => {
           this.$toast.error(response.data.message, "Error", { timeout: 3000 });
         });
+    },
+
+    destroy() {
+      this.$toast.question(
+        "Are you sure you want to delete the screening?",
+        "Confirm",
+        {
+          timeout: 20000,
+          close: false,
+          overlay: true,
+          toastOnce: true,
+          id: "question",
+          zindex: 999,
+          position: "center",
+          buttons: [
+            [
+              "<button><b>YES</b></button>",
+              (instance, toast) => {
+                this.delete();
+
+                instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+              },
+              true,
+            ],
+            [
+              "<button>NO</button>",
+              (instance, toast) => {
+                instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+              },
+            ],
+          ],
+        }
+      );
+    },
+
+    delete() {
+      axios.delete(`/screenings/${this.screeningData.id}`).then(({ data }) => {
+        this.$toast.success(data.message, "Success", { timeout: 2000 });
+      });
+
+      setTimeout(() => {
+        window.location.href = "/screenings";
+      }, 3000);
     },
   },
 };

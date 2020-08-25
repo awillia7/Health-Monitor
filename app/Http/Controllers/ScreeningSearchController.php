@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Screening;
 use LdapRecord\Models\ActiveDirectory\User AS LdapUser;
 
-class UserSearchController extends Controller
+class ScreeningSearchController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:ADMIN');
+        $this->middleware('role:MANAGER');
     }
 
     /**
@@ -23,36 +24,45 @@ class UserSearchController extends Controller
     public function __invoke(Request $request)
     {
         $search = null;
-        if (preg_match("/^\d+$/", $request->userSearch)) {
+        if (preg_match("/^\d+$/", $request->screeningSearch)) {
             // Search by ID
-            $search = str_pad($request->userSearch, 7, "0", STR_PAD_LEFT);
+            $search = str_pad($request->screeningSearch, 7, "0", STR_PAD_LEFT);
             $user = User::where('erp_id', $search)->first();
         } else {
             // Search by username
-            $search = $request->userSearch;
+            $search = $request->screeningSearch;
             $user = User::where('username', $search)->first();
         }
 
         if ($user) {
+            $screening = $user->getTodayScreening();
+
             if ($request->expectsJson()) {
-                $roles = $user->roles ? $user->roles : [];
+                $id = $screening ? $screening->id : null;
+                $score = $id ? $screening->score : null;
+                $fail_score = $id ? $screening->fail_score : null;
+                $override_at = $id ? $screening->override_at : null;
+                $override_user_id = $id ? $screening->override_user_id : null;
+                
                 return response()->json([
-                    "id" => $user->id,
-                    "erp_id" => $user->erp_id,
-                    "name" => $user->name,
-                    "username" => $user->username,
-                    "admin" => in_array("ADMIN", $roles),
-                    "manager" => in_array("MANAGER", $roles),
-                    "override" => in_array("OVERRIDE", $roles),
-                    "delete" => in_array("DELETE", $roles)
+                    "id" => $id,
+                    "score" => $score,
+                    "fail_score" => $fail_score,
+                    "override_at" => $override_at,
+                    "override_user_id" => $override_user_id,
+                    'user' => $user
                 ]);
             }
 
-            return redirect()->route('users.index');
+            if ($screening) {
+                return redirect()->route('screenings.show' ,['screening' => $screening]);
+            } else {
+                return redirect()->route('screenings.index');
+            }
         }
 
         // Search AD for valid user
-        if (preg_match("/^\d+$/", $request->userSearch)) {
+        if (preg_match("/^\d+$/", $request->screeningSearch)) {
             // Search by ID
             $user = LdapUser::where('employeeNumber', '=', $search)->first();
         } else {
@@ -78,16 +88,13 @@ class UserSearchController extends Controller
 
             // Return new user
             if ($request->expectsJson()) {
-                $roles = $newUser->roles ? $newUser->roles : [];
                 return response()->json([
-                    "id" => $newUser->id,
-                    "erp_id" => $newUser->erp_id,
-                    "name" => $newUser->name,
-                    "username" => $newUser->username,
-                    "admin" => in_array("ADMIN", $roles),
-                    "manager" => in_array("MANAGER", $roles),
-                    "override" => in_array("OVERRIDE", $roles),
-                    "delete" => in_array("DELETE", $roles)
+                    "id" => null,
+                    "score" => null,
+                    "fail_score" => null,
+                    "override_at" => null,
+                    "override_user_id" => null,
+                    'user' => $newUser
                 ]);
             }
         }
@@ -98,6 +105,6 @@ class UserSearchController extends Controller
             ], 204);
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route('screenings.index');
     }
 }

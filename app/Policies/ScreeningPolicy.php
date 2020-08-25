@@ -70,7 +70,7 @@ class ScreeningPolicy
      */
     public function delete(User $user, Screening $screening)
     {
-        //
+        return in_array("DELETE", $user->roles);
     }
 
     /**

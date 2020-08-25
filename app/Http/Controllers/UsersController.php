@@ -27,6 +27,7 @@ class UsersController extends Controller
         $roles = [];
         ($request->admin) ? array_push($roles, 'ADMIN') : null;
         ($request->override) ? array_push($roles, 'OVERRIDE') : null;
+        ($request->delete) ? array_push($roles, 'DELETE') : null;
         ($request->manager) ? array_push($roles, 'MANAGER') : null;
         
         $user->roles = empty($roles) ? null : $roles;
