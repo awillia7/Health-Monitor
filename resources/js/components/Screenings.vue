@@ -60,7 +60,7 @@
               <span v-if="newScreening.id" class="col-2">{{ newScreening.score }}</span>
               <span
                 v-else
-                class="col-8 text-uppercase font-weight-light"
+                class="col-6 text-uppercase font-weight-light"
               >No Screening Found</span>
               <span v-if="newScreening.id" class="col-2">{{ newScreening.fail_score }}</span>
               <span
