@@ -215,12 +215,12 @@ export default {
                 timeout: 3000,
               });
             } else {
-              this.$toast.success("Screening already added", "Warning", {
+              this.$toast.warning("Screening already added", "Warning", {
                 timeout: 3000,
               });
             }
           } else if (status === 204) {
-            this.$toast.success("User not found", "Warning", {
+            this.$toast.warning("User not found", "Warning", {
               timeout: 3000,
             });
           }
