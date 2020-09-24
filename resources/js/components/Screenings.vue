@@ -75,10 +75,19 @@
             </div>
             <div class="row justify-content-center align-items-center pt-2 mb-2">
               <span class="col-6">
-                <input class="form-control" type="text" v-model="screeningSearch" />
+                <input
+                  :disabled="disableScreeningSearch"
+                  class="form-control"
+                  type="text"
+                  v-model="screeningSearch"
+                />
               </span>
               <span class="col-2">
-                <button @click="search()" class="btn btn-primary">Search User</button>
+                <button
+                  :disabled="disableScreeningSearch"
+                  @click="search()"
+                  class="btn btn-primary"
+                >Search User</button>
               </span>
             </div>
           </div>
@@ -97,6 +106,7 @@ export default {
       screeningsData: [],
       newScreeningsData: [],
       screeningSearch: null,
+      disableScreeningSearch: false,
     };
   },
 
@@ -198,6 +208,7 @@ export default {
     },
 
     search() {
+      this.disableScreeningSearch = true;
       axios
         .post("/screenings/search", { screeningSearch: this.screeningSearch })
         .then(({ data, status }) => {
@@ -230,6 +241,7 @@ export default {
         })
         .then(() => {
           this.screeningSearch = null;
+          this.disableScreeningSearch = false;
         });
     },
   },

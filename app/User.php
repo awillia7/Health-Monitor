@@ -20,6 +20,8 @@ class User extends Authenticatable implements LdapAuthenticatable
 
     protected $fillable = ['roles'];
 
+    protected $appends = ['type'];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -49,5 +51,16 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function hasRole($role)
     {
         return in_array($role, $this->roles ? $this->roles : []);
+    }
+
+    public function getTypeAttribute()
+    {
+        if (preg_match("/\@mvnu\.edu$/s", $this->email)) {
+            return "EMPLOYEE";
+        } elseif (preg_match("/\@mail\.mvnu\.edu$/s", $this->email)) {
+            return "STUDENT";
+        }
+        
+        return null;
     }
 }

@@ -69,10 +69,19 @@
             </div>
             <div class="row justify-content-center align-items-center mb-2">
               <span class="col-6">
-                <input class="form-control" type="text" v-model="userSearch" />
+                <input
+                  :disabled="disableUserSearch"
+                  class="form-control"
+                  type="text"
+                  v-model="userSearch"
+                />
               </span>
               <span class="col-2">
-                <button @click="search()" class="btn btn-primary">Add User</button>
+                <button
+                  :disabled="disableUserSearch"
+                  @click="search()"
+                  class="btn btn-primary"
+                >Add User</button>
               </span>
             </div>
           </div>
@@ -91,6 +100,7 @@ export default {
       usersData: [],
       newUsersData: [],
       userSearch: null,
+      disableUserSearch: false,
     };
   },
 
@@ -132,6 +142,7 @@ export default {
     },
 
     search() {
+      this.disableUserSearch = true;
       axios
         .post("/users/search", { userSearch: this.userSearch })
         .then(({ data, status }) => {
@@ -162,6 +173,7 @@ export default {
         })
         .then(() => {
           this.userSearch = null;
+          this.disableUserSearch = false;
         });
     },
   },
