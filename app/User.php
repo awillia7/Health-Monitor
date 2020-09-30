@@ -20,7 +20,7 @@ class User extends Authenticatable implements LdapAuthenticatable
 
     protected $fillable = ['roles'];
 
-    protected $appends = ['type'];
+    protected $appends = ['type', 'formatted_test_optin_date', 'formatted_test_print_date'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -61,6 +61,28 @@ class User extends Authenticatable implements LdapAuthenticatable
             return "STUDENT";
         }
         
+        return null;
+    }
+
+    public function getFormattedTestOptinDateAttribute()
+    {
+        if ($this->test_optin_date) {
+            $date = Carbon::parse($this->test_optin_date);
+        
+            return $date->toFormattedDateString();
+        }
+
+        return null;
+    }
+
+    public function getFormattedTestPrintDateAttribute()
+    {
+        if ($this->test_print_date) {
+            $date = Carbon::parse($this->test_print_date);
+
+            return $date->toFormattedDateString();
+        }
+
         return null;
     }
 }

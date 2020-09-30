@@ -42,6 +42,20 @@
                             </li>
                         @else
                             
+                            @if (env('TEMP_ENABLE_TESTING'))
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link">
+                                Daily Screening
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('testing.optin') }}" class="nav-link">
+                                Testing Opt-In
+                                </a>
+                            </li>
+                            @endif
+
                             @if (Auth::user()->hasRole("MANAGER"))
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

@@ -28,3 +28,5 @@ Route::post('screenings/search', "ScreeningSearchController");
 Route::post('/screenings/submit', 'SubmitScreeningController');
 Route::patch('/screenings/{screening}/override', 'OverrideScreeningController');
 Route::put('/fail-score', 'UpdateFailScoreController');
+Route::get('/testing-optin', 'TestingOptinFormController')->name('testing.optin');
+Route::put('/testing-optin', 'TestingOptinController');

@@ -31,6 +31,7 @@ Vue.component('screening', require('./components/Screening.vue').default);
 Vue.component('screenings', require('./components/Screenings.vue').default);
 Vue.component('update-questions', require('./components/UpdateQuestions.vue').default);
 Vue.component('users', require('./components/Users.vue').default);
+Vue.component('testing-optin', require('./components/TestingOptin.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
