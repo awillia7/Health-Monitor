@@ -11,7 +11,7 @@ class OverrideScreeningController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:OVERRIDE');
+        $this->middleware('role:SCREENINGS_OVERRIDE');
     }
 
     /**

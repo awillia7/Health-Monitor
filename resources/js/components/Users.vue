@@ -6,57 +6,131 @@
           <h3 class="card-header">Users</h3>
           <div class="card-body">
             <div
-              class="row justify-content-center align-items-center mb-2"
+              class="row justify-content-center align-items-center pb-2 border border-top-0 border-right-0 border-left-0"
               v-for="user in usersData"
               :key="user.id"
             >
               <span class="col-2">{{ user.name }}</span>
               <span class="col-2">{{ user.username }}</span>
               <span class="col-6">
+                <legend>Screenings</legend>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="user.manager" />
-                  <label class="form-check-label">Manager</label>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="user.screenings_view"
+                  />
+                  <label class="form-check-label">View</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="user.override" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="user.screenings_override"
+                  />
                   <label class="form-check-label">Override</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="user.delete" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="user.screenings_delete"
+                  />
                   <label class="form-check-label">Delete</label>
                 </div>
+                <legend>Tests</legend>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="user.admin" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="user.tests_view"
+                  />
+                  <label class="form-check-label">View</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="user.tests_import"
+                  />
+                  <label class="form-check-label">Import</label>
+                </div>
+                <legend>Administration</legend>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="user.admin"
+                  />
                   <label class="form-check-label">Admin</label>
                 </div>
               </span>
               <span class="col-2">
-                <button @click="update(`/users/${user.id}`, user)" class="btn btn-primary">Update</button>
+                <button
+                  @click="update(`/users/${user.id}`, user)"
+                  class="btn btn-primary"
+                >
+                  Update
+                </button>
               </span>
             </div>
-            <hr />
             <div
-              class="row justify-content-center align-items-center mb-2"
+              class="row justify-content-center align-items-center pb-2 border border-top-0 border-right-0 border-left-0"
               v-for="newUser in newUsersData"
               :key="newUser.id"
             >
               <span class="col-2">{{ newUser.name }}</span>
               <span class="col-2">{{ newUser.username }}</span>
               <span class="col-6">
+                <legend>Screenings</legend>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="newUser.manager" />
-                  <label class="form-check-label">Manager</label>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="newUser.screenings_view"
+                  />
+                  <label class="form-check-label">View</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="newUser.override" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="newUser.screenings_override"
+                  />
                   <label class="form-check-label">Override</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="newUser.delete" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="newUser.screenings_delete"
+                  />
                   <label class="form-check-label">Delete</label>
                 </div>
+                <legend>Tests</legend>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" v-model="newUser.admin" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="newUser.tests_view"
+                  />
+                  <label class="form-check-label">View</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="newUser.tests_import"
+                  />
+                  <label class="form-check-label">Import</label>
+                </div>
+                <legend>Administration</legend>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="newUser.admin"
+                  />
                   <label class="form-check-label">Admin</label>
                 </div>
               </span>
@@ -64,10 +138,14 @@
                 <button
                   @click="update(`/users/${newUser.id}`, newUser)"
                   class="btn btn-primary"
-                >Update</button>
+                >
+                  Update
+                </button>
               </span>
             </div>
-            <div class="row justify-content-center align-items-center mb-2">
+            <div
+              class="row justify-content-center align-items-center mb-2 mt-4"
+            >
               <span class="col-6">
                 <input
                   :disabled="disableUserSearch"
@@ -81,7 +159,9 @@
                   :disabled="disableUserSearch"
                   @click="search()"
                   class="btn btn-primary"
-                >Add User</button>
+                >
+                  Add User
+                </button>
               </span>
             </div>
           </div>
@@ -112,9 +192,11 @@ export default {
       let username = this.users[user].username;
       let roles = this.users[user].roles;
       let admin = roles.includes("ADMIN");
-      let manager = roles.includes("MANAGER");
-      let delete_screening = roles.includes("DELETE");
-      let override = roles.includes("OVERRIDE");
+      let screenings_view = roles.includes("SCREENINGS_VIEW");
+      let screenings_override = roles.includes("SCREENINGS_OVERRIDE");
+      let screenings_delete = roles.includes("SCREENINGS_DELETE");
+      let tests_view = roles.includes("TESTS_VIEW");
+      let tests_import = roles.includes("TESTS_IMPORT");
 
       this.usersData.push({
         id,
@@ -122,9 +204,11 @@ export default {
         name,
         username,
         admin,
-        manager,
-        override,
-        delete: delete_screening,
+        screenings_view,
+        screenings_override,
+        screenings_delete,
+        tests_view,
+        tests_import,
       });
     }
   },

@@ -12,7 +12,7 @@ class ScreeningSearchController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:MANAGER');
+        $this->middleware('role:SCREENINGS_VIEW');
     }
 
     /**

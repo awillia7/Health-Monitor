@@ -35,7 +35,7 @@ class ScreeningPolicy
 
     public function index(User $user)
     {
-        return in_array("MANAGER", $user->roles);
+        return in_array("SCREENINGS_VIEW", $user->roles);
     }
 
     /**
@@ -70,7 +70,7 @@ class ScreeningPolicy
      */
     public function delete(User $user, Screening $screening)
     {
-        return in_array("DELETE", $user->roles);
+        return in_array("SCREENINGS_DELETE", $user->roles);
     }
 
     /**

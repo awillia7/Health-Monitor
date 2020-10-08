@@ -21,6 +21,7 @@ Auth::routes([
 
 Route::resource('screenings', 'ScreeningsController')->only('show', 'index', 'destroy');
 Route::resource('questions', 'QuestionsController')->only('index');
+Route::resource('tests', 'TestsController')->only('store');
 Route::post('/questions/update-all', 'UpdateAllQuestionsController');
 Route::resource('users', 'UsersController')->only('index', 'update');
 Route::post('/users/search', "UserSearchController");
@@ -30,3 +31,4 @@ Route::patch('/screenings/{screening}/override', 'OverrideScreeningController');
 Route::put('/fail-score', 'UpdateFailScoreController');
 Route::get('/testing-optin', 'TestingOptinFormController')->name('testing.optin');
 Route::put('/testing-optin', 'TestingOptinController');
+Route::get('/tests/upload', 'TestUploadFormController')->name('tests.upload');

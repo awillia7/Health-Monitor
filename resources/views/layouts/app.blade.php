@@ -56,7 +56,7 @@
                             </li>
                             @endif
 
-                            @if (Auth::user()->hasRole("MANAGER"))
+                            @if (Auth::user()->hasRole("SCREENINGS_VIEW") || Auth::user()->hasRole("TESTS_VIEW") || Auth::user()->hasRole("TESTS_IMPORT"))
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         Manage <span class="caret"></span>

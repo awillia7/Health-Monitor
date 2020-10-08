@@ -42,9 +42,11 @@ class UserSearchController extends Controller
                     "name" => $user->name,
                     "username" => $user->username,
                     "admin" => in_array("ADMIN", $roles),
-                    "manager" => in_array("MANAGER", $roles),
-                    "override" => in_array("OVERRIDE", $roles),
-                    "delete" => in_array("DELETE", $roles)
+                    "screenings_view" => in_array("SCREENINGS_VIEW", $roles),
+                    "screenings_override" => in_array("SCREENINGS_OVERRIDE", $roles),
+                    "screenings_delete" => in_array("SCREENINGS_DELETE", $roles),
+                    "tests_view" => in_array("TESTS_VIEW", $roles),
+                    "tests_import" => in_array("TESTS_IMPORT", $roles)
                 ]);
             }
 
@@ -85,9 +87,11 @@ class UserSearchController extends Controller
                     "name" => $newUser->name,
                     "username" => $newUser->username,
                     "admin" => in_array("ADMIN", $roles),
-                    "manager" => in_array("MANAGER", $roles),
-                    "override" => in_array("OVERRIDE", $roles),
-                    "delete" => in_array("DELETE", $roles)
+                    "screenings_view" => in_array("SCREENINGS_VIEW", $roles),
+                    "screenings_override" => in_array("SCREENINGS_OVERRIDE", $roles),
+                    "screenings_delete" => in_array("SCREENINGS_DELETE", $roles),
+                    "tests_view" => in_array("TESTS_VIEW", $roles),
+                    "tests_import" => in_array("TESTS_IMPORT", $roles)
                 ]);
             }
         }
