@@ -23,9 +23,8 @@ class TestingOptinController extends Controller
     {
         $user = User::find($request->user()->id);
 
-        if ($user && $request->signature) {
+        if ($user && $request->optin_date) {
             $user->test_optin_date = $request->optin_date;
-            $user->test_optin_signature = $request->signature;
             $user->test_print_date = $request->print_date;
             $user->save();
 
@@ -33,14 +32,13 @@ class TestingOptinController extends Controller
                 return response()->json([
                     'id' => $user->id,
                     'test_optin_date' => $user->formatted_test_optin_date,
-                    'test_optin_signature' => $user->test_optin_signature,
                     'test_print_date' => $user->formatted_test_print_date,
                     'message' => "You are now Opted In for Testing"
                 ]);
             }
 
             return redirect()->route('testing.optin');
-        } else if ($user->test_optin_signature && $request->print_date) {
+        } else if ($user->test_optin_date && $request->print_date) {
             $user->test_print_date = $request->print_date;
             $user->save();
 

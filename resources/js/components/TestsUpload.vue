@@ -1,36 +1,55 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-md-1">&nbsp;</div>
-      <div class="col-md-10 justify-content-center text-center">
-        <div class="form-group files">
-          <label>Upload Test Results </label>
-          <input
-            type="file"
-            :disabled="disableUpload"
-            class="form-control"
-            @change="excelExport"
-            accept="application/vnd.openxmlformats-officedocument.spreadsheet.spreadsheetml.sheet"
-          />
+    <div class="row justify-content-center text-center">
+      <div class="w-100">
+        <div class="row">
+          <div class="col-md-1">&nbsp;</div>
+          <div class="col-md-10 justify-content-center text-center">
+            <div class="form-group files">
+              <label>Upload Test Results </label>
+              <input
+                type="file"
+                :disabled="disableUpload"
+                class="form-control"
+                @change="excelExport"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheet.spreadsheetml.sheet"
+              />
+            </div>
+          </div>
+          <div class="col-md-1">&nbsp;</div>
+        </div>
+        <div class="row" v-for="(row, index) in excelData" :key="index">
+          <div class="col-md-1">&nbsp;</div>
+          <div class="col-md-2 justify-content-center text-center">
+            {{ row.user_id }}
+          </div>
+          <div class="col-md-3 justify-content-center text-center">
+            {{ row.result }}
+          </div>
+          <div class="col-md-3 justify-content-center text-center">
+            {{ row.test_date }}
+          </div>
+          <div v-if="row.id > 0" class="col-md-2">
+            <span class="text-success">IMPORTED</span>
+          </div>
+          <div v-if="row.id < 0" class="col-md-2">
+            <span class="text-danger">ERROR</span>
+          </div>
+          <div class="col-md-1">&nbsp;</div>
+        </div>
+        <div
+          v-if="disableUpload"
+          class="row text-center mt-2 d-flex justify-content-center"
+        >
+          <button
+            :disabled="disableImport"
+            class="btn btn-outline-primary btn-lg"
+            @click="store"
+          >
+            Save Test Results
+          </button>
         </div>
       </div>
-      <div class="col-md-1">&nbsp;</div>
-    </div>
-    <div class="row" v-for="(row, index) in excelData" :key="index">
-      <div class="col-md-1">&nbsp;</div>
-      <div class="col-md-2 justify-content-center text-center">
-        {{ row.id }}
-      </div>
-      <div class="col-md-4 justify-content-center text-center">
-        {{ row.result }}
-      </div>
-      <div class="col-md-4 justify-content-center text-center">
-        {{ row.date }}
-      </div>
-      <div class="col-md-1">&nbsp;</div>
-    </div>
-    <div v-if="disableUpload" class="row text-center">
-      <button class="btn btn-primary" @click="store">Save Test Results</button>
     </div>
   </div>
 </template>
@@ -42,6 +61,7 @@ export default {
   data() {
     return {
       excelData: [],
+      disableImport: false,
     };
   },
 
@@ -53,20 +73,28 @@ export default {
 
   methods: {
     store() {
+      this.disableImport = true;
       for (let test in this.excelData) {
+        let user_id = this.excelData[test].user_id;
+        let test_date = new Date(this.excelData[test].test_date)
+          .toISOString()
+          .slice(0, 10);
+        let result = this.excelData[test].result;
+
         axios
           .post("/tests", {
-            user_id: this.excelData[test].id,
-            test_date: this.excelData[test].date,
-            result: this.excelData[test].result,
+            user_id,
+            test_date,
+            result,
           })
           .then(({ data }) => {
-            console.log(data);
+            this.excelData[test].id = data.id;
           })
           .catch(({ response }) => {
-            this.$toast.error(response.data.message, "Error", {
-              timeout: 3000,
-            });
+            this.excelData[test].id = -1;
+            // this.$toast.error(response.data.message, "Error", {
+            //   timeout: 3000,
+            // });
           });
       }
     },
@@ -81,7 +109,18 @@ export default {
           let rowObj = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], {
             raw: false,
           });
-          this.excelData = rowObj;
+
+          let testObj = [];
+          for (let row in rowObj) {
+            testObj[row] = {
+              user_id: rowObj[row].id,
+              test_date: rowObj[row].date,
+              result: rowObj[row].result,
+              id: null,
+            };
+          }
+
+          this.excelData = testObj;
           //   this.excelData = JSON.stringify(rowObj);
         });
       };

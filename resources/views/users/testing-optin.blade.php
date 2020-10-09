@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<testing-optin :user="{{ $user }}" />
+<testing-optin :user="{{ $user }}" :test="{{ $test }}" />
 @endsection

@@ -63,7 +63,17 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        @if (auth::user()->hasRole("SCREENINGS_VIEW"))
                                         <a class="dropdown-item" href="{{ route('screenings.index') }}">Screenings</a>
+                                        @endif
+
+                                        @if (auth::user()->hasRole("TESTS_VIEW"))
+                                        <a class="dropdown-item" href="{{ route('tests.index') }}">Tests</a>
+                                        @endif
+
+                                        @if (auth::user()->hasRole("TESTS_IMPORT"))
+                                        <a class="dropdown-item" href="{{ route('tests.upload') }}">Import Tests</a>
+                                        @endif
                                     </div>
                                 </li>
                             @endif

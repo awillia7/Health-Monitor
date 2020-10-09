@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Test;
 
 class TestingOptinFormController extends Controller
 {
@@ -19,6 +20,13 @@ class TestingOptinFormController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('users/testing-optin', ['user' => \Auth::user()]);
+        $user = \Auth::user();
+        $test = Test::where('user_id', $user->id)
+            ->orderBy('test_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $test = $test ? $test : new Test();
+
+        return view('users/testing-optin', compact('user', 'test'));
     }
 }

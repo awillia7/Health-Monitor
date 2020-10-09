@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class TestsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,9 @@ class TestsController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('index', Test::class);
+
+        return view('tests/index');
     }
 
     /**
@@ -47,7 +54,7 @@ class TestsController extends Controller
                 'id' => $test->id,
                 'user_id' => $test->user_id,
                 'result' => $test->result,
-                'date' => $test->date,
+                'test_date' => $test->test_date,
                 'message' => "Test result saved"
             ]);
         }

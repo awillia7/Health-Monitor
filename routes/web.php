@@ -19,9 +19,9 @@ Auth::routes([
     'register' => false,
 ]);
 
-Route::resource('screenings', 'ScreeningsController')->only('show', 'index', 'destroy');
+Route::resource('screenings', 'ScreeningsController')->only('index', 'show', 'destroy');
 Route::resource('questions', 'QuestionsController')->only('index');
-Route::resource('tests', 'TestsController')->only('store');
+Route::resource('tests', 'TestsController')->only('index', 'store');
 Route::post('/questions/update-all', 'UpdateAllQuestionsController');
 Route::resource('users', 'UsersController')->only('index', 'update');
 Route::post('/users/search', "UserSearchController");
