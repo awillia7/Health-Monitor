@@ -42,6 +42,8 @@ class TestsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Test::class);
+
         // Create Test
         $test = new Test;
         $test->user_id = $request->user_id;

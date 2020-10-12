@@ -25,4 +25,9 @@ class TestPolicy
     {
         return in_array("TESTS_VIEW", $user->roles);
     }
+
+    public function create(User $user)
+    {
+        return in_array("TESTS_IMPORT", $user->roles);
+    }
 }

@@ -9,6 +9,7 @@ class TestUploadFormController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('role:TESTS_IMPORT');
     }
 
     /**
