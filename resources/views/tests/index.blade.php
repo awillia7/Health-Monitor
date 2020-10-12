@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<tests />
+<tests :tests="{{ $tests }}" />
 @endsection

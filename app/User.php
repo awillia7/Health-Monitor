@@ -36,6 +36,11 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this->hasMany(Screening::class);
     }
 
+    public function tests()
+    {
+        return $this->hasMany(Test::class);
+    }
+
     public function overrideScreenings()
     {
         return $this->hasMany(Screening::class);

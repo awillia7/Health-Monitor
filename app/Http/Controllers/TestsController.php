@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Test;
+use App\User;
 use Illuminate\Http\Request;
 
 class TestsController extends Controller
@@ -21,7 +22,16 @@ class TestsController extends Controller
     {
         $this->authorize('index', Test::class);
 
-        return view('tests/index');
+        $tests = User::with(['tests' => function ($q) {
+            $q->orderBy('test_date', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->first();
+        }])->whereNotNull('test_optin_date')
+            ->orderBy('last_name')
+            ->orderBy('first_name')
+            ->get();
+
+        return view('tests/index', compact('tests'));
     }
 
     /**
