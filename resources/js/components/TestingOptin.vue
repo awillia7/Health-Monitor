@@ -1,17 +1,38 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
+      <div v-if="test.id" class="w-100 justify-content-center text-center">
+        <div class="card mb-2">
+          <h3 class="card-header">Latest Test Result</h3>
+          <div class="card-body">
+            <div class="row justify-content-center align-items-center mb-2">
+              <span class="col-8 font-weight-bold">Result</span>
+              <span class="col-4 font-weight-bold">Date</span>
+            </div>
+            <div class="row justify-content-center align-items-center mb-2">
+              <span :class="resultClass" class="col-8">{{ test.result }}</span>
+              <span class="col-4">{{ formatted_test_date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="card mb-2">
+        <h3 class="card-header text-center">COVID-19 Testing Opt-In Agreement</h3>
         <div class="card-body">
           <div class="row mb-2 ml-2 mr-2">
-            Testing OptIn HIPPA Mumbo Jumbo Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
+            <p>
+              The SARS CoV-2 Surveillance Test is conducted by depositing saliva
+              in a test tube wherein sampling is performed. The only test that
+              will be performed on the samples will be for the SARS CoV-2. All
+              samples will be destroyed immediately after testing is complete.
+              Test results will only be released to MVNU health employees.
+            </p>
+            <p>
+              I understand this is not a diagnosis but an indication. If further
+              diagnosis is necessary, I will be advised and directed to Student
+              Health Services. My indication below is acceptance to this
+              program.
+            </p>
           </div>
           <hr v-if="!optinStatus" />
           <div
@@ -75,21 +96,6 @@
                   Request Labels
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="test.id" class="w-100 justify-content-center text-center">
-        <div class="card mb-2">
-          <h3 class="card-header">Latest Test Result</h3>
-          <div class="card-body">
-            <div class="row justify-content-center align-items-center mb-2">
-              <span class="col-8 font-weight-bold">Result</span>
-              <span class="col-4 font-weight-bold">Date</span>
-            </div>
-            <div class="row justify-content-center align-items-center mb-2">
-              <span :class="resultClass" class="col-8">{{ test.result }}</span>
-              <span class="col-4">{{ formatted_test_date }}</span>
             </div>
           </div>
         </div>
