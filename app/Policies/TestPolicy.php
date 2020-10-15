@@ -23,7 +23,7 @@ class TestPolicy
 
     public function index(User $user)
     {
-        return in_array("TESTS_VIEW", $user->roles);
+        return in_array("TESTS_VIEW", $user->roles) || in_array("TESTS_RESULTS", $user->roles);
     }
 
     public function create(User $user)

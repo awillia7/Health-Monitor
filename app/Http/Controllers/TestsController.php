@@ -22,7 +22,7 @@ class TestsController extends Controller
     {
         $this->authorize('index', Test::class);
 
-        $tests = User::with(['tests' => function ($q) {
+        $test_query = User::with(['tests' => function ($q) {
             $q->orderBy('test_date', 'DESC')
             ->orderBy('created_at', 'DESC')
             ->first();
@@ -31,7 +31,20 @@ class TestsController extends Controller
             ->orderBy('first_name')
             ->get();
 
-        return view('tests/index', compact('tests'));
+        $tests = [];
+        foreach ($test_query as $user) {
+            $test_result = \Auth::user()->hasRole('TESTS_RESULTS');
+            array_push($tests, [
+                "name" => $user->name,
+                "test_date" => $user->tests->count() ? $user->tests[0]->test_date : null,
+                "test_result" => ($test_result && $user->tests->count()) ? $user->tests[0]->result : null,
+                "result_html_class" => ($test_result && $user->tests->count()) ? $user->tests[0]->htmlClass : null,
+                "results_permission" => $test_result
+            ]);
+        }
+
+        // return view('tests/index', compact('tests'));
+        return view('tests/index', ["tests" => json_encode($tests)]);
     }
 
     /**

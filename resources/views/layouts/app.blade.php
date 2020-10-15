@@ -67,7 +67,7 @@
                                         <a class="dropdown-item" href="{{ route('screenings.index') }}">Screenings</a>
                                         @endif
 
-                                        @if (auth::user()->hasRole("TESTS_VIEW"))
+                                        @if (auth::user()->hasRole("TESTS_VIEW") || auth::user()->hasRole("TESTS_RESULTS"))
                                         <a class="dropdown-item" href="{{ route('tests.index') }}">Tests</a>
                                         @endif
 

@@ -51,6 +51,14 @@
                   <input
                     class="form-check-input"
                     type="checkbox"
+                    v-model="user.tests_results"
+                  />
+                  <label class="form-check-label">Results</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
                     v-model="user.tests_import"
                   />
                   <label class="form-check-label">Import</label>
@@ -196,6 +204,7 @@ export default {
       let screenings_override = roles.includes("SCREENINGS_OVERRIDE");
       let screenings_delete = roles.includes("SCREENINGS_DELETE");
       let tests_view = roles.includes("TESTS_VIEW");
+      let tests_results = roles.includes("TESTS_RESULTS");
       let tests_import = roles.includes("TESTS_IMPORT");
 
       this.usersData.push({
@@ -208,6 +217,7 @@ export default {
         screenings_override,
         screenings_delete,
         tests_view,
+        tests_results,
         tests_import,
       });
     }

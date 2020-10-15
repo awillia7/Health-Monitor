@@ -30,6 +30,7 @@ class UsersController extends Controller
         ($request->screenings_override) ? array_push($roles, 'SCREENINGS_OVERRIDE') : null;
         ($request->screenings_delete) ? array_push($roles, 'SCREENINGS_DELETE') : null;
         ($request->tests_view) ? array_push($roles, 'TESTS_VIEW') : null;
+        ($request->tests_results) ? array_push($roles, 'TESTS_RESULTS') : null;
         ($request->tests_import) ? array_push($roles, 'TESTS_IMPORT') : null;
 
         $user->roles = empty($roles) ? null : $roles;

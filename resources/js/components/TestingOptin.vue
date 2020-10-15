@@ -3,21 +3,22 @@
     <div class="row justify-content-center">
       <div v-if="test.id" class="w-100 justify-content-center text-center">
         <div class="card mb-2">
-          <h3 class="card-header">Latest Test Result</h3>
           <div class="card-body">
-            <div class="row justify-content-center align-items-center mb-2">
-              <span class="col-8 font-weight-bold">Result</span>
-              <span class="col-4 font-weight-bold">Date</span>
-            </div>
-            <div class="row justify-content-center align-items-center mb-2">
-              <span :class="resultClass" class="col-8">{{ test.result }}</span>
-              <span class="col-4">{{ formatted_test_date }}</span>
+            <div class="row mb-2">
+              <span
+                class="col-12 d-flex flex-row justify-content-center align-items-center"
+                ><span class="font-weight-bold text-large"
+                  >Latest Test Date: &nbsp;</span
+                ><span>{{ formatted_test_date }}</span></span
+              >
             </div>
           </div>
         </div>
       </div>
       <div class="card mb-2">
-        <h3 class="card-header text-center">COVID-19 Testing Opt-In Agreement</h3>
+        <h3 class="card-header text-center">
+          COVID-19 Testing Opt-In Agreement
+        </h3>
         <div class="card-body">
           <div class="row mb-2 ml-2 mr-2">
             <p>
@@ -210,3 +211,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.text-large {
+  font-size: 125%;
+}
+</style>
