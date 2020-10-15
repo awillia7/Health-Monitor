@@ -24,8 +24,7 @@ class TestsController extends Controller
 
         $test_query = User::with(['tests' => function ($q) {
             $q->orderBy('test_date', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->first();
+            ->orderBy('created_at', 'DESC');
         }])->whereNotNull('test_optin_date')
             ->orderBy('last_name')
             ->orderBy('first_name')
