@@ -32,3 +32,4 @@ Route::put('/fail-score', 'UpdateFailScoreController');
 Route::get('/testing-optin', 'TestingOptinFormController')->name('testing.optin');
 Route::put('/testing-optin', 'TestingOptinController');
 Route::get('/tests/upload', 'TestUploadFormController')->name('tests.upload');
+Route::post('/tests/email', 'EmailTestResults')->name('tests.email');

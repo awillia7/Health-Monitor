@@ -74,6 +74,8 @@ export default {
   methods: {
     store() {
       this.disableImport = true;
+      let positiveTests = [];
+      let importPromises = [];
       for (let test in this.excelData) {
         let user_id = this.excelData[test].user_id;
         let test_date = new Date(this.excelData[test].test_date)
@@ -81,22 +83,35 @@ export default {
           .slice(0, 10);
         let result = this.excelData[test].result;
 
-        axios
-          .post("/tests", {
-            user_id,
-            test_date,
-            result,
-          })
-          .then(({ data }) => {
-            this.excelData[test].id = data.id;
-          })
-          .catch(({ response }) => {
-            this.excelData[test].id = -1;
-            // this.$toast.error(response.data.message, "Error", {
-            //   timeout: 3000,
-            // });
-          });
+        importPromises.push(
+          axios
+            .post("/tests", {
+              user_id,
+              test_date,
+              result,
+            })
+            .then(({ data }) => {
+              this.excelData[test].id = data.id;
+              if (data.result === "POSITIVE") {
+                positiveTests.push(data.id);
+              }
+            })
+            .catch(({ response }) => {
+              this.excelData[test].id = -1;
+            })
+        );
       }
+
+      Promise.all(importPromises).then(() => {
+        if (positiveTests.length) {
+          axios
+            .post("/tests/email", {
+              tests: positiveTests,
+            })
+            .then(({ data }) => {})
+            .catch(({ response }) => {});
+        }
+      });
     },
 
     excelExport(event) {
