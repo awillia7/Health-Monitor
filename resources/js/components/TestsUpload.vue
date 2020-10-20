@@ -128,9 +128,9 @@ export default {
           let testObj = [];
           for (let row in rowObj) {
             testObj[row] = {
-              user_id: rowObj[row].id,
-              test_date: rowObj[row].date,
-              result: rowObj[row].result,
+              user_id: rowObj[row].ID,
+              test_date: rowObj[row].Date,
+              result: rowObj[row].Result,
               id: null,
             };
           }
