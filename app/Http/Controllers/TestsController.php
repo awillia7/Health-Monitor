@@ -25,24 +25,50 @@ class TestsController extends Controller
         $test_query = User::with(['tests' => function ($q) {
             $q->orderBy('test_date', 'DESC')
             ->orderBy('created_at', 'DESC');
-        }])->whereNotNull('test_optin_date')
-            ->orderBy('last_name')
+        }])->orderBy('last_name')
             ->orderBy('first_name')
             ->get();
 
         $tests = [];
+        $positive_tests = [];
+        $negative_tests = [];
         foreach ($test_query as $user) {
-            $test_result = \Auth::user()->hasRole('TESTS_RESULTS');
-            array_push($tests, [
-                "name" => $user->name,
-                "test_date" => $user->tests->count() ? $user->tests[0]->test_date : null,
-                "test_result" => ($test_result && $user->tests->count()) ? $user->tests[0]->result : null,
-                "result_html_class" => ($test_result && $user->tests->count()) ? $user->tests[0]->htmlClass : null,
-                "results_permission" => $test_result
-            ]);
+            if ($user->tests->count() > 0) {
+                if (\Auth::user()->hasRole('TESTS_RESULTS')) {
+                    if ($user->tests[0]->result == 'POSITIVE') {
+                        array_push($positive_tests, [
+                            "name" => $user->name,
+                            "test_date" => $user->tests[0]->test_date,
+                            "test_result" => $user->tests[0]->result,
+                            "result_html_class" => $user->tests[0]->htmlClass,
+                            "results_permission" => true
+                        ]);
+                    } else if ($user->tests[0]->result == 'NEGATIVE') {
+                        array_push($negative_tests, [
+                            "name" => $user->name,
+                            "test_date" => $user->tests[0]->test_date,
+                            "test_result" => $user->tests[0]->result,
+                            "result_html_class" => $user->tests[0]->htmlClass,
+                            "results_permission" => true
+                        ]);
+                    }
+                } else {
+                    array_push($tests, [
+                        "name" => $user->name,
+                        "test_date" => $user->tests[0]->test_date,
+                        "test_result" => null,
+                        "result_html_class" => null,
+                        "results_permission" => false
+                    ]);
+                }
+            }
         }
 
-        // return view('tests/index', compact('tests'));
+        // Check if positive and negative test need to be combined
+        if (\Auth::user()->hasRole('TESTS_RESULTS')) {
+            $tests = array_merge($positive_tests, $negative_tests);
+        }
+        
         return view('tests/index', ["tests" => json_encode($tests)]);
     }
 
