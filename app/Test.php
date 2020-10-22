@@ -16,7 +16,15 @@ class Test extends Model
 
     public function getHtmlClassAttribute()
     {
-        return $this->result == 'NEGATIVE' ? "text-success" : "text-danger";
+        if ($this->result == 'NEGATIVE') {
+            $class = "text-success";
+        } else if ($this->result == 'POSITIVE') {
+            $class = "text-danger";
+        } else {
+            $class = "";
+        }
+
+        return $class;
     }
 
     public function getFormattedTestDateAttribute()

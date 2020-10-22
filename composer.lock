@@ -4697,12 +4697,12 @@
             "version": "v7.15.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tightenco/collect.git",
+                "url": "https://github.com/tighten/collect.git",
                 "reference": "4606f2088591d34d6c4600604b3ad64d8699698e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tightenco/collect/zipball/4606f2088591d34d6c4600604b3ad64d8699698e",
+                "url": "https://api.github.com/repos/tighten/collect/zipball/4606f2088591d34d6c4600604b3ad64d8699698e",
                 "reference": "4606f2088591d34d6c4600604b3ad64d8699698e",
                 "shasum": ""
             },
@@ -6158,6 +6158,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {

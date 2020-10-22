@@ -31,12 +31,21 @@ class TestsController extends Controller
 
         $tests = [];
         $positive_tests = [];
+        $unreadable_tests = [];
         $negative_tests = [];
         foreach ($test_query as $user) {
             if ($user->tests->count() > 0) {
                 if (\Auth::user()->hasRole('TESTS_RESULTS')) {
                     if ($user->tests[0]->result == 'POSITIVE') {
                         array_push($positive_tests, [
+                            "name" => $user->name,
+                            "test_date" => $user->tests[0]->test_date,
+                            "test_result" => $user->tests[0]->result,
+                            "result_html_class" => $user->tests[0]->htmlClass,
+                            "results_permission" => true
+                        ]);
+                    } else if ($user->tests[0]->result == 'UNREADABLE') {
+                        array_push($unreadable_tests, [
                             "name" => $user->name,
                             "test_date" => $user->tests[0]->test_date,
                             "test_result" => $user->tests[0]->result,
@@ -66,7 +75,7 @@ class TestsController extends Controller
 
         // Check if positive and negative test need to be combined
         if (\Auth::user()->hasRole('TESTS_RESULTS')) {
-            $tests = array_merge($positive_tests, $negative_tests);
+            $tests = array_merge($positive_tests, $unreadable_tests, $negative_tests);
         }
         
         return view('tests/index', ["tests" => json_encode($tests)]);
