@@ -69,9 +69,9 @@ return [
         'users' => [
             'driver' => 'ldap',
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'rules' => [
-               App\Ldap\Rules\HasIdCard::class,
-            ],
+            // 'rules' => [
+            //    App\Ldap\Rules\HasIdCard::class,
+            // ],
             'database' => [
                 'model' => App\User::class,
                 'sync_passwords' => false,

@@ -62,8 +62,7 @@ class UserSearchController extends Controller
             $user = LdapUser::where('sAMAccountName', '=', $search)->first();
         }
 
-        if ($user && ($user->getFirstAttribute('samAccountName') === getenv("ADMIN_ACCOUNT") 
-            || !empty($user->getFirstAttribute('extensionAttribute13')))) {
+        if ($user) {
             
             // Add new user found in LDAP
             $newUser = new User();
