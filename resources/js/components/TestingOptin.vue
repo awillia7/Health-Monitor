@@ -86,12 +86,11 @@
                 />
               </div>
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-2" v-if="!printStatus">
               <label>&nbsp;</label>
               <div class="text-center">
                 <button
                   class="btn btn-primary"
-                  :disabled="printStatus"
                   @click="print"
                 >
                   Request Labels
