@@ -23,6 +23,9 @@ class TestsController extends Controller
         $this->authorize('index', Test::class);
 
         $test_query = User::with(['tests' => function ($q) {
+            if (!(\Auth::user()->hasRole('TESTS_RESULTS'))) {
+                $q->where('result', '<>', 'UNREADABLE');
+            }
             $q->orderBy('test_date', 'DESC')
             ->orderBy('created_at', 'DESC');
         }])->orderBy('last_name')

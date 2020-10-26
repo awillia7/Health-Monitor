@@ -22,6 +22,7 @@ class TestingOptinFormController extends Controller
     {
         $user = \Auth::user();
         $test = Test::where('user_id', $user->id)
+            ->where('result', '<>', 'UNREADABLE')
             ->orderBy('test_date', 'desc')
             ->orderBy('created_at', 'desc')
             ->first();
