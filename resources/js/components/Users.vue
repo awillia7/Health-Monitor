@@ -128,6 +128,14 @@
                   <input
                     class="form-check-input"
                     type="checkbox"
+                    v-model="newUser.tests_results"
+                  />
+                  <label class="form-check-label">Results</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
                     v-model="newUser.tests_import"
                   />
                   <label class="form-check-label">Import</label>
