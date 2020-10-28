@@ -8,8 +8,52 @@
               <span
                 class="col-12 d-flex flex-row justify-content-center align-items-center"
                 ><span class="font-weight-bold text-large"
+                  >Test Label ID: &nbsp;</span
+                ><span v-if="displayUserId"
+                  >{{ test.user_id }} &nbsp;
+                  <button
+                    @click="displayUserId = !displayUserId"
+                    class="btn btn-secondary btn-sm"
+                  >
+                    Hide
+                  </button></span
+                ><span v-else
+                  ><button
+                    @click="displayUserId = !displayUserId"
+                    class="btn btn-primary btn-sm"
+                  >
+                    Show
+                  </button></span
+                ></span
+              >
+            </div>
+            <div class="row mb-2">
+              <span
+                class="col-12 d-flex flex-row justify-content-center align-items-center"
+                ><span class="font-weight-bold text-large"
                   >Latest Test Date: &nbsp;</span
                 ><span>{{ formatted_test_date }}</span></span
+              >
+            </div>
+            <div class="row mb-2">
+              <span
+                class="col-12 d-flex flex-row justify-content-center align-items-center"
+                ><span class="font-weight-bold text-large">Result: &nbsp;</span
+                ><span :class="test.htmlClass" v-if="displayResult"
+                  >{{ test.result }} &nbsp;<button
+                    @click="displayResult = !displayResult"
+                    class="btn btn-secondary btn-sm"
+                  >
+                    Hide
+                  </button></span
+                ><span v-else
+                  ><button
+                    @click="displayResult = !displayResult"
+                    class="btn btn-primary btn-sm"
+                  >
+                    Show
+                  </button></span
+                ></span
               >
             </div>
           </div>
@@ -89,10 +133,7 @@
             <div class="form-group col-md-2" v-if="!printStatus">
               <label>&nbsp;</label>
               <div class="text-center">
-                <button
-                  class="btn btn-primary"
-                  @click="print"
-                >
+                <button class="btn btn-primary" @click="print">
                   Request Labels
                 </button>
               </div>
@@ -115,6 +156,8 @@ export default {
       userData: null,
       optinCheck: false,
       disableOptinCheck: false,
+      displayResult: false,
+      displayUserId: false,
     };
   },
 
