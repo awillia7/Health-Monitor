@@ -23,7 +23,8 @@ class UserTestWaiverController extends Controller
     public function __invoke(Request $request)
     {
         $users = User::where('test_waiver_start_date', '<=', Carbon::today())
-        ->where('test_waiver_end_date', '>=', Carbon::today())->get();
+        ->where('test_waiver_end_date', '>=', Carbon::today())
+        ->orderBy('last_name')->orderBy('first_name')->get();
 
         return view('users.testing-waivers', compact('users'));
     }
