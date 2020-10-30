@@ -42,7 +42,6 @@
                             </li>
                         @else
                             
-                            @if (env('TEMP_ENABLE_TESTING'))
                             <li class="nav-item">
                                 <a href="{{ route('home') }}" class="nav-link">
                                 Daily Screening
@@ -54,7 +53,6 @@
                                 Testing Opt-In
                                 </a>
                             </li>
-                            @endif
 
                             @if (Auth::user()->hasRole("SCREENINGS_VIEW") || Auth::user()->hasRole("TESTS_VIEW") || Auth::user()->hasRole("TESTS_IMPORT"))
                                 <li class="nav-item dropdown">
