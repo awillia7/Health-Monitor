@@ -35,7 +35,7 @@
                 ><span>{{ formatted_test_date }}</span></span
               >
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" v-if="false">
               <span
                 class="col-12 d-flex flex-row justify-content-center align-items-center"
                 ><span class="font-weight-bold text-large">Result: &nbsp;</span

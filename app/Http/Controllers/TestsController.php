@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Test;
 use App\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TestsController extends Controller
 {
@@ -22,6 +23,7 @@ class TestsController extends Controller
     {
         $this->authorize('index', Test::class);
 
+        $last_test = Test::orderBy('test_date', 'desc')->first();
         $test_query = User::with(['tests' => function ($q) {
             if (!(\Auth::user()->hasRole('TESTS_RESULTS'))) {
                 $q->where('result', '<>', 'UNREADABLE');
@@ -37,42 +39,42 @@ class TestsController extends Controller
         $unreadable_tests = [];
         $negative_tests = [];
         foreach ($test_query as $user) {
-            if ($user->tests->count() > 0) {
-                if (\Auth::user()->hasRole('TESTS_RESULTS')) {
-                    if ($user->tests[0]->result == 'POSITIVE') {
-                        array_push($positive_tests, [
-                            "name" => $user->name,
-                            "test_date" => $user->tests[0]->test_date,
-                            "test_result" => $user->tests[0]->result,
-                            "result_html_class" => $user->tests[0]->htmlClass,
-                            "results_permission" => true
-                        ]);
-                    } else if ($user->tests[0]->result == 'UNREADABLE') {
-                        array_push($unreadable_tests, [
-                            "name" => $user->name,
-                            "test_date" => $user->tests[0]->test_date,
-                            "test_result" => $user->tests[0]->result,
-                            "result_html_class" => $user->tests[0]->htmlClass,
-                            "results_permission" => true
-                        ]);
-                    } else if ($user->tests[0]->result == 'NEGATIVE') {
-                        array_push($negative_tests, [
-                            "name" => $user->name,
-                            "test_date" => $user->tests[0]->test_date,
-                            "test_result" => $user->tests[0]->result,
-                            "result_html_class" => $user->tests[0]->htmlClass,
-                            "results_permission" => true
-                        ]);
-                    }
-                } else {
-                    array_push($tests, [
+            if ($user->tests->count() > 0 && \Auth::user()->hasRole('TESTS_RESULTS')) {
+                if ($user->tests[0]->result == 'POSITIVE') {
+                    array_push($positive_tests, [
                         "name" => $user->name,
                         "test_date" => $user->tests[0]->test_date,
-                        "test_result" => null,
-                        "result_html_class" => null,
-                        "results_permission" => false
+                        "test_result" => $user->tests[0]->result,
+                        "result_html_class" => $user->tests[0]->htmlClass,
+                        "results_permission" => true
+                    ]);
+                } else if ($user->tests[0]->result == 'UNREADABLE') {
+                    array_push($unreadable_tests, [
+                        "name" => $user->name,
+                        "test_date" => $user->tests[0]->test_date,
+                        "test_result" => $user->tests[0]->result,
+                        "result_html_class" => $user->tests[0]->htmlClass,
+                        "results_permission" => true
+                    ]);
+                } else if ($user->tests[0]->result == 'NEGATIVE') {
+                    array_push($negative_tests, [
+                        "name" => $user->name,
+                        "test_date" => $user->tests[0]->test_date,
+                        "test_result" => $user->tests[0]->result,
+                        "result_html_class" => $user->tests[0]->htmlClass,
+                        "results_permission" => true
                     ]);
                 }
+            } else if ($user->tests->count() > 0 ||
+                ($user->test_waiver_start_date <= Carbon::now() && $user->test_waiver_end_date >= Carbon::now())) {
+                $test_date = $user->test_waiver_start_date <= Carbon::now() && $user->test_waiver_end_date >= Carbon::now() ? $last_test->test_date : $user->tests[0]->test_date;
+                array_push($tests, [
+                    "name" => $user->name,
+                    "test_date" => $test_date,
+                    "test_result" => null,
+                    "result_html_class" => null,
+                    "results_permission" => false
+                ]);
             }
         }
 

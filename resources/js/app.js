@@ -34,6 +34,7 @@ Vue.component('users', require('./components/Users.vue').default);
 Vue.component('testing-optin', require('./components/TestingOptin.vue').default);
 Vue.component('tests-upload', require('./components/TestsUpload.vue').default);
 Vue.component('tests', require('./components/Tests.vue').default);
+Vue.component('testing-waivers', require('./components/TestingWaivers.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -63,7 +63,7 @@ export default {
   methods: {
     formatDate($date) {
       return $date ? moment($date).format("MMMM D, YYYY") : null;
-    }
-  }
+    },
+  },
 };
 </script>

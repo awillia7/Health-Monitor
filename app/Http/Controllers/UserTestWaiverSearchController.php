@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\User;
 use LdapRecord\Models\ActiveDirectory\User AS LdapUser;
 
-class UserSearchController extends Controller
+class UserTestWaiverSearchController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:ADMIN');
+        $this->middleware('role:TESTS_WAIVERS');
     }
 
     /**
@@ -38,17 +38,9 @@ class UserSearchController extends Controller
                 $roles = $user->roles ? $user->roles : [];
                 return response()->json([
                     "id" => $user->id,
-                    "erp_id" => $user->erp_id,
                     "name" => $user->name,
-                    "username" => $user->username,
-                    "admin" => in_array("ADMIN", $roles),
-                    "screenings_view" => in_array("SCREENINGS_VIEW", $roles),
-                    "screenings_override" => in_array("SCREENINGS_OVERRIDE", $roles),
-                    "screenings_delete" => in_array("SCREENINGS_DELETE", $roles),
-                    "tests_view" => in_array("TESTS_VIEW", $roles),
-                    "tests_results" => in_array("TESTS_RESULTS", $roles),
-                    "tests_waivers" => in_array("TESTS_WAIVERS", $roles),
-                    "tests_import" => in_array("TESTS_IMPORT", $roles)
+                    "test_waiver_start_date" => $user->test_waiver_start_date,
+                    "test_waiver_end_date" => $user->test_waiver_end_date
                 ]);
             }
 
@@ -84,17 +76,9 @@ class UserSearchController extends Controller
                 $roles = $newUser->roles ? $newUser->roles : [];
                 return response()->json([
                     "id" => $newUser->id,
-                    "erp_id" => $newUser->erp_id,
-                    "name" => $newUser->name,
-                    "username" => $newUser->username,
-                    "admin" => in_array("ADMIN", $roles),
-                    "screenings_view" => in_array("SCREENINGS_VIEW", $roles),
-                    "screenings_override" => in_array("SCREENINGS_OVERRIDE", $roles),
-                    "screenings_delete" => in_array("SCREENINGS_DELETE", $roles),
-                    "tests_view" => in_array("TESTS_VIEW", $roles),
-                    "tests_results" => in_array("TESTS_RESULTS", $roles),
-                    "tests_waivers" => in_array("TESTS_WAIVERS", $roles),
-                    "tests_import" => in_array("TESTS_IMPORT", $roles)
+                    "name" => $user->name,
+                    "test_waiver_start_date" => $user->test_waiver_start_date,
+                    "test_waiver_end_date" => $user->test_waiver_end_date
                 ]);
             }
         }
@@ -105,6 +89,6 @@ class UserSearchController extends Controller
             ], 204);
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.testing-waivers');
     }
 }

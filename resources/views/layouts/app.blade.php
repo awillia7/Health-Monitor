@@ -71,6 +71,10 @@
                                         <a class="dropdown-item" href="{{ route('tests.index') }}">Tests</a>
                                         @endif
 
+                                        @if (auth::user()->hasRole("TESTS_WAIVERS"))
+                                        <a class="dropdown-item" href="{{ route('tests.waivers') }}">Test Waivers</a>
+                                        @endif
+
                                         @if (auth::user()->hasRole("TESTS_IMPORT"))
                                         <a class="dropdown-item" href="{{ route('tests.upload') }}">Import Tests</a>
                                         @endif

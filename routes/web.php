@@ -33,3 +33,6 @@ Route::get('/testing-optin', 'TestingOptinFormController')->name('testing.optin'
 Route::put('/testing-optin', 'TestingOptinController');
 Route::get('/tests/upload', 'TestUploadFormController')->name('tests.upload');
 Route::post('/tests/email', 'EmailTestResults')->name('tests.email');
+Route::get('/users/test-waivers', 'UserTestWaiverController')->name('tests.waivers');
+Route::post('/users/test-waivers/search', 'UserTestWaiverSearchController')->name('tests.waivers.search');
+Route::put('/users/{user}/test-waiver', 'UpdateUserTestWaiverController');
