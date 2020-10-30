@@ -3,7 +3,7 @@
     <div class="row justify-content-center text-center">
       <div class="w-100">
         <div class="card mb-2">
-          <div class="card-header">Waived Users</div>
+          <h3 class="card-header">Waived Users</h3>
           <div class="card-body">
             <div class="row justify-content-center align-items-center mb-2">
               <span class="col-3 font-weight-bold">Name</span>
