@@ -1,6 +1,33 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
+      <div v-if="test.unreadable" class="alert alert-warning w-100 justify-content-center text-center">
+        <span
+          class="col-12 d-flex flex-row justify-content-center align-items-center"
+        >
+          Unfortunately, the latest sample you submitted was unreadable,
+          possibly due to one of these factors
+        </span>
+        <span
+          class="col-12 d-flex flex-row text-left justify-content-center align-items-center"
+        >
+          <ul class="list mb-0">
+            <li class="">
+              Eating or drinking within 30 minutes of submitting the sample
+            </li>
+            <li class="">
+              Brushing teeth within 30 minutes of submitting the sample
+            </li>
+            <li class="">Sample size was too small</li>
+          </ul>
+        </span>
+        <span
+          class="col-12 d-flex flex-row justify-content-center align-items-center"
+        >
+          To receive credit for testing this week, please deposit another sample
+          in any collection box around campus by 4 pm on Thursday
+        </span>
+      </div>
       <div v-if="test.id" class="w-100 justify-content-center text-center">
         <div class="card mb-2">
           <div class="card-body">

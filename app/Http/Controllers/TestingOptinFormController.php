@@ -42,13 +42,47 @@ class TestingOptinFormController extends Controller
             ->orderBy('test_date', 'desc')
             ->orderBy('created_at', 'desc')
             ->first();
+        $first = Test::select('id', 'user_id', 'result', 'test_date')
+            ->where('user_id', $user->id)
+            ->orderBy('test_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->first();
             
         if ($waiver) {
-            $test = $waiver;
+            // Set test to waiver
+            $test = [
+                'id' => $waiver->id,
+                'user_id' => $waiver->user_id,
+                'result' => $waiver->result,
+                'test_date' => $waiver->test_date,
+                'htmlClass' => $waiver->htmlClass,
+                'unreadable' => false
+            ];
         } else {
-            $test = $test ? $test : new Test();
+            if ($test) {
+                $test = [
+                    'id' => $test->id,
+                    'user_id' => $test->user_id,
+                    'result' => $test->result,
+                    'test_date' => $test->test_date,
+                    'htmlClass' => $test->htmlClass
+                ];
+            } else {
+                $test = [
+                    'id' => null,
+                    'user_id' => $user->id,
+                    'result' => null,
+                    'test_date' => null,
+                    'htmlClass' => null
+                ];
+            }
+            $test['unreadable'] = $first && $first->result === 'UNREADABLE' ? true : false;
         }
 
-        return view('users/testing-optin', compact('user', 'test'));
+        // return view('users/testing-optin', compact('user', 'test'));
+        return view('users/testing-optin', [
+            'user' => $user,
+            'test' => json_encode($test)
+        ]);
     }
 }
