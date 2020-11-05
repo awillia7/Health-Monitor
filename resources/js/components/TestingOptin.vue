@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <div v-if="test.unreadable" class="alert alert-warning w-100 justify-content-center text-center">
+      <div
+        v-if="test.unreadable"
+        class="alert alert-warning w-100 justify-content-center text-center"
+      >
         <span
           class="col-12 d-flex flex-row justify-content-center align-items-center"
         >
@@ -62,12 +65,13 @@
                 ><span>{{ formatted_test_date }}</span></span
               >
             </div>
-            <div class="row mb-2" v-if="false">
+            <div class="row mb-2">
               <span
                 class="col-12 d-flex flex-row justify-content-center align-items-center"
-                ><span class="font-weight-bold text-large">Result: &nbsp;</span
-                ><span :class="test.htmlClass" v-if="displayResult"
-                  >{{ test.result }} &nbsp;<button
+                ><span class="font-weight-bold text-large"
+                  >Next Step: &nbsp;</span
+                ><span v-if="displayResult"
+                  >{{ getStep }} &nbsp;<button
                     @click="displayResult = !displayResult"
                     class="btn btn-secondary btn-sm"
                   >
@@ -82,6 +86,13 @@
                   </button></span
                 ></span
               >
+            </div>
+            <div v-if="displayResult" class="row mb-2">
+              <span
+                class="col-12 d-flex flex-row justify-content-center align-items-center"
+              >
+                {{ getStepDetail }}
+              </span>
             </div>
           </div>
         </div>
@@ -208,6 +219,32 @@ export default {
   computed: {
     disableOptinButton() {
       return this.userData.test_optin_date ? true : !this.optinCheck;
+    },
+
+    getStep() {
+      return this.test.result === "POSITIVE"
+        ? "Contact Student Health Services"
+        : "No further action needed";
+    },
+
+    getStepDetail() {
+      let message = "";
+      switch (this.test.result) {
+        case "POSITIVE":
+          message =
+            "If you have not already heard from an SHS staff member, please text your name to 740-507-0257.";
+          break;
+        case "NEGATIVE":
+          message = "The sample you submitted does not require follow up.";
+          break;
+        case "WAIVER":
+          message = `You have been waived from testing until ${moment(
+            this.user.test_waiver_end_date
+          ).format("MMMM D, YYYY")}.`;
+          break;
+      }
+
+      return message;
     },
 
     optinStatus() {
