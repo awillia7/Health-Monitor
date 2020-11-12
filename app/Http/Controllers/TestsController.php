@@ -43,6 +43,8 @@ class TestsController extends Controller
                 if ($user->tests[0]->result == 'POSITIVE') {
                     array_push($positive_tests, [
                         "name" => $user->name,
+                        "first_name" => $user->first_name,
+                        "last_name" => $user->last_name,
                         "test_date" => $user->tests[0]->test_date,
                         "test_result" => $user->tests[0]->result,
                         "result_html_class" => $user->tests[0]->htmlClass,
@@ -51,6 +53,8 @@ class TestsController extends Controller
                 } else if ($user->tests[0]->result == 'UNREADABLE') {
                     array_push($unreadable_tests, [
                         "name" => $user->name,
+                        "first_name" => $user->first_name,
+                        "last_name" => $user->last_name,
                         "test_date" => $user->tests[0]->test_date,
                         "test_result" => $user->tests[0]->result,
                         "result_html_class" => $user->tests[0]->htmlClass,
@@ -59,6 +63,8 @@ class TestsController extends Controller
                 } else if ($user->tests[0]->result == 'NEGATIVE') {
                     array_push($negative_tests, [
                         "name" => $user->name,
+                        "first_name" => $user->first_name,
+                        "last_name" => $user->last_name,
                         "test_date" => $user->tests[0]->test_date,
                         "test_result" => $user->tests[0]->result,
                         "result_html_class" => $user->tests[0]->htmlClass,
@@ -70,6 +76,8 @@ class TestsController extends Controller
                 $test_date = $user->test_waiver_start_date <= Carbon::now() && $user->test_waiver_end_date >= Carbon::now() ? $last_test->test_date : $user->tests[0]->test_date;
                 array_push($tests, [
                     "name" => $user->name,
+                    "first_name" => $user->first_name,
+                    "last_name" => $user->last_name,
                     "test_date" => $test_date,
                     "test_result" => null,
                     "result_html_class" => null,
@@ -80,22 +88,29 @@ class TestsController extends Controller
 
         // Check if positive and negative test need to be combined
         if (\Auth::user()->hasRole('TESTS_RESULTS')) {
-            
+
             // Sort results by test date
-            usort($positive_tests, function($a, $b) {
-                return -(strcmp($a["test_date"], $b["test_date"]));
-            });
-            usort($unreadable_tests, function($a, $b) {
-                return -(strcmp($a["test_date"], $b["test_date"]));
-            });
-            usort($negative_tests, function($a, $b) {
-                return -(strcmp($a["test_date"], $b["test_date"]));
-            });
+            usort($positive_tests, "self::testCompare");
+            usort($unreadable_tests, "self::testCompare");
+            usort($negative_tests, "self::testCompare");
 
             $tests = array_merge($positive_tests, $unreadable_tests, $negative_tests);
         }
         
         return view('tests/index', ["tests" => json_encode($tests)]);
+    }
+
+    private static function testCompare($a, $b)
+    {
+        if (strcmp($a["test_date"], $b["test_date"]) <> 0) {
+            return -(strcmp($a["test_date"], $b["test_date"]));
+        }
+
+        if (strcmp($a["last_name"], $b["last_name"]) <> 0) {
+            return strcmp($a["last_name"], $b["last_name"]);
+        }
+
+        return strcmp($a["first_name"], $b["first_name"]);
     }
 
     /**
