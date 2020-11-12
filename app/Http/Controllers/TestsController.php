@@ -80,6 +80,18 @@ class TestsController extends Controller
 
         // Check if positive and negative test need to be combined
         if (\Auth::user()->hasRole('TESTS_RESULTS')) {
+            
+            // Sort results by test date
+            usort($positive_tests, function($a, $b) {
+                return -(strcmp($a["test_date"], $b["test_date"]));
+            });
+            usort($unreadable_tests, function($a, $b) {
+                return -(strcmp($a["test_date"], $b["test_date"]));
+            });
+            usort($negative_tests, function($a, $b) {
+                return -(strcmp($a["test_date"], $b["test_date"]));
+            });
+
             $tests = array_merge($positive_tests, $unreadable_tests, $negative_tests);
         }
         
