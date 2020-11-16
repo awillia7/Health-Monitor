@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <form class="w-100" action="/screenings/submit" method="post">
+      <form class="w-100" @submit="submitted = true" action="/screenings/submit" method="post">
         <slot></slot>
 
         <div
@@ -17,7 +17,7 @@
 
         <div class="form-group">
           <button
-            :disabled="!valid"
+            :disabled="!valid || submitted"
             type="submit"
             class="btn btn-lg btn-outline-primary btn-block"
           >Submit</button>
@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       questionGroups: null,
+      submitted: false,
       value: null
     };
   },
