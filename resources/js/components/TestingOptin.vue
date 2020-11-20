@@ -222,8 +222,11 @@ export default {
     },
 
     getStep() {
-      return this.test.result === "POSITIVE"
-        ? "Contact Student Health Services"
+      // return this.test.result === "POSITIVE"
+      //   ? "Contact Student Health Services"
+      //   : "No further action needed";
+        return this.test.result === "POSITIVE"
+        ? "The test date listed above indicates that you are flagged as having high likelihood of being infected with COVID"
         : "No further action needed";
     },
 
@@ -231,8 +234,10 @@ export default {
       let message = "";
       switch (this.test.result) {
         case "POSITIVE":
+          // message =
+          //   "If you have not already heard from an SHS staff member, please text your name to 740-507-0257.";
           message =
-            "If you have not already heard from an SHS staff member, please text your name to 740-507-0257.";
+             "If this is the result of an exit test administered between November 19-23, please eliminate interactions with others immediately and make arrangements with friends or family to isolate off campus to prevent the spread of the disease.  Although the Yale Saliva Test is highly accurate, we recommend that you submit a PCR test to confirm the test results.  The best way to do so is contact your county’s health department to determine what testing options you have in your area.";
           break;
         case "NEGATIVE":
           message = "The sample you submitted does not require follow up.";
