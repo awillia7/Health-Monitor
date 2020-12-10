@@ -18,6 +18,42 @@
           </div>
           <div class="col-md-1">&nbsp;</div>
         </div>
+        <div
+          v-if="disableUpload"
+          class="row text-center mb-2 d-flex justify-content-center"
+        >
+          <button
+            :disabled="disableImport"
+            class="btn btn-outline-primary btn-lg"
+            @click="store"
+          >
+            Save Test Results
+          </button>
+        </div>
+        <div v-if="disableUpload" class="row">
+          <span class="col-4 text-success"
+            >IMPORTED: {{ testsImportCount }}</span
+          >
+          <span class="col-4 text-danger"
+            >ERRORS: {{ testsImportErrorsCount }}</span
+          >
+          <span class="col-4">TOTAL: {{ testsCount }}</span>
+        </div>
+        <div v-if="disableUpload && disableImport" class="row">
+          <div class="col-12 progress" style="height: 20px">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              :style="`width: ${testsImportPercent}`"
+              :aria-valuenow="testsImportCount + testsImportErrorsCount"
+              aria-valuemin="0"
+              :aria-valuemax="testsCount"
+            >
+              {{ testsImportStatus }}
+            </div>
+          </div>
+        </div>
+        <hr v-if="disableUpload" />
         <div class="row" v-for="(row, index) in excelData" :key="index">
           <div class="col-md-1">&nbsp;</div>
           <div class="col-md-2 justify-content-center text-center">
@@ -36,18 +72,6 @@
             <span class="text-danger">ERROR</span>
           </div>
           <div class="col-md-1">&nbsp;</div>
-        </div>
-        <div
-          v-if="disableUpload"
-          class="row text-center mt-2 d-flex justify-content-center"
-        >
-          <button
-            :disabled="disableImport"
-            class="btn btn-outline-primary btn-lg"
-            @click="store"
-          >
-            Save Test Results
-          </button>
         </div>
       </div>
     </div>
@@ -68,6 +92,43 @@ export default {
   computed: {
     disableUpload() {
       return !(this.excelData === undefined || this.excelData.length == 0);
+    },
+
+    testsCount() {
+      return this.excelData.length;
+    },
+
+    testsImportCount() {
+      if (!this.excelData) return 0;
+      return this.excelData.filter((test) => {
+        return test.id > 0;
+      }).length;
+    },
+
+    testsImportErrorsCount() {
+      if (!this.excelData) return 0;
+      return this.excelData.filter((test) => {
+        return test.id == -1;
+      }).length;
+    },
+
+    testsImportPercent() {
+      const percent = this.testsCount
+        ? Math.floor(
+            ((this.testsImportCount + this.testsImportErrorsCount) /
+              this.testsCount) *
+              100
+          )
+        : 0;
+      return `${percent}%`;
+    },
+
+    testsImportStatus() {
+      if (!this.testsCount) return null;
+      return this.testsImportCount + this.testsImportErrorsCount ===
+        this.testsCount
+        ? "DONE"
+        : this.testsImportPercent;
     },
   },
 
